@@ -1,4 +1,4 @@
-var typeforce = require('../')
+const typeforce = require('../')
 
 function Unmatchable () { return false }
 function Letter (value) {
@@ -9,7 +9,7 @@ module.exports = {
   '(Boolean, Number)': typeforce.tuple('Boolean', 'Number'),
   '(Number|String)': typeforce.tuple(typeforce.anyOf('Number', 'String')),
   '(Number)': typeforce.tuple('Number'),
-  '[?{ a: Number }]': [ typeforce.maybe({ a: 'Number' }) ],
+  '[?{ a: Number }]': [typeforce.maybe({ a: 'Number' })],
   'Boolean|Number|String': typeforce.anyOf('Boolean', 'Number', 'String'),
   '?Boolean|Number': typeforce.maybe(typeforce.anyOf('Boolean', 'Number')),
   '?{ a: ?Number }': typeforce.maybe({ a: '?Number' }),
@@ -20,7 +20,7 @@ module.exports = {
   '{ a: ?{ b: ?{ c: Number } } }': { a: typeforce.maybe({ b: typeforce.maybe({ c: 'Number' }) }) },
   '{ a: undefined }': { a: undefined },
   '@{ a: undefined }': typeforce.object({ a: undefined }), // DEPRECATED
-  'Unmatchable': Unmatchable,
+  Unmatchable: Unmatchable,
   '?Unmatchable': typeforce.maybe(Unmatchable),
   '{ a: ?Unmatchable }': { a: typeforce.maybe(Unmatchable) },
   '{ a: { b: Unmatchable } }': { a: { b: Unmatchable } },
@@ -37,22 +37,22 @@ module.exports = {
   'Array6(Number)': typeforce.arrayOf(typeforce.Number, { length: 6 }),
   'Array>=6(Number)': typeforce.arrayOf(typeforce.Number, { minLength: 6 }),
   'Array<=6(Number)': typeforce.arrayOf(typeforce.Number, { maxLength: 6 }),
-  'Array6': typeforce.ArrayN(6),
-  'Array7': typeforce.ArrayN(7),
-  'Buffer0': typeforce.BufferN(0),
-  'Buffer3': typeforce.BufferN(3),
-  'Buffer10': typeforce.BufferN(10),
-  'Hex': typeforce.Hex,
-  'Hex64': typeforce.HexN(64),
-  'String4': typeforce.StringN(4),
+  Array6: typeforce.ArrayN(6),
+  Array7: typeforce.ArrayN(7),
+  Buffer0: typeforce.BufferN(0),
+  Buffer3: typeforce.BufferN(3),
+  Buffer10: typeforce.BufferN(10),
+  Hex: typeforce.Hex,
+  Hex64: typeforce.HexN(64),
+  String4: typeforce.StringN(4),
   'Range1-5': typeforce.Range(1, 5),
   'Int8Range0-100': typeforce.Range(0, 100, typeforce.Int8),
-  'Int8': typeforce.Int8,
-  'Int16': typeforce.Int16,
-  'Int32': typeforce.Int32,
-  'Int53': typeforce.Int53,
-  'UInt8': typeforce.UInt8,
-  'UInt16': typeforce.UInt16,
-  'UInt32': typeforce.UInt32,
-  'UInt53': typeforce.UInt53
+  Int8: typeforce.Int8,
+  Int16: typeforce.Int16,
+  Int32: typeforce.Int32,
+  Int53: typeforce.Int53,
+  UInt8: typeforce.UInt8,
+  UInt16: typeforce.UInt16,
+  UInt32: typeforce.UInt32,
+  UInt53: typeforce.UInt53
 }

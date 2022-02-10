@@ -1,5 +1,5 @@
-var NATIVE = require('./native')
-var ERRORS = require('./errors')
+const NATIVE = require('./native')
+const ERRORS = require('./errors')
 
 function _Buffer (value) {
   return Buffer.isBuffer(value)
@@ -10,7 +10,7 @@ function Hex (value) {
 }
 
 function _LengthN (type, length) {
-  var name = type.toJSON()
+  const name = type.toJSON()
 
   function Length (value) {
     if (!type(value)) return false
@@ -23,10 +23,10 @@ function _LengthN (type, length) {
   return Length
 }
 
-var _ArrayN = _LengthN.bind(null, NATIVE.Array)
-var _BufferN = _LengthN.bind(null, _Buffer)
-var _HexN = _LengthN.bind(null, Hex)
-var _StringN = _LengthN.bind(null, NATIVE.String)
+const _ArrayN = _LengthN.bind(null, NATIVE.Array)
+const _BufferN = _LengthN.bind(null, _Buffer)
+const _HexN = _LengthN.bind(null, Hex)
+const _StringN = _LengthN.bind(null, NATIVE.String)
 
 function Range (a, b, f) {
   f = f || NATIVE.Number
@@ -39,7 +39,7 @@ function Range (a, b, f) {
   return _range
 }
 
-var INT53_MAX = Math.pow(2, 53) - 1
+const INT53_MAX = Math.pow(2, 53) - 1
 
 function Finite (value) {
   return typeof value === 'number' && isFinite(value)
@@ -63,7 +63,7 @@ function UInt53 (value) {
     Math.floor(value) === value
 }
 
-var types = {
+const types = {
   ArrayN: _ArrayN,
   Buffer: _Buffer,
   BufferN: _BufferN,
@@ -82,7 +82,7 @@ var types = {
   UInt53: UInt53
 }
 
-for (var typeName in types) {
+for (const typeName in types) {
   types[typeName].toJSON = function (t) {
     return t
   }.bind(null, typeName)
