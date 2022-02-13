@@ -156,13 +156,5 @@ module.exports = ${util.inspect(fixtures, { depth: Infinity })}
 
 fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `module.exports = [
 ${ALLTYPES.map(({ id }) => `  require('./fixtures/${id}.js')`).join(',\n')}
-].map(({ type, typeId, valid, invalid }) => ({
-  valid: valid.map(entry => Object.assign(entry, { type, typeId })),
-  invalid: invalid.map(entry => Object.assign(entry, { type, typeId }))
-})).reduce(function (result, next) {
-  return {
-    valid: result.valid.concat(next.valid),
-    invalid: result.invalid.concat(next.invalid)
-  }
-})
+]
 `)

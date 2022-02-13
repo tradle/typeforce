@@ -71,12 +71,4 @@ module.exports = [
   require('./fixtures/1_46.js'),
   require('./fixtures/1_47.js'),
   require('./fixtures/1_48.js')
-].map(({ type, typeId, valid, invalid }) => ({
-  valid: valid.map(entry => Object.assign(entry, { type, typeId })),
-  invalid: invalid.map(entry => Object.assign(entry, { type, typeId }))
-})).reduce(function (result, next) {
-  return {
-    valid: result.valid.concat(next.valid),
-    invalid: result.invalid.concat(next.invalid)
-  }
-})
+]
