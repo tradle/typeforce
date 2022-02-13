@@ -72,14 +72,14 @@ tape('TfTypeError is an Error', function (t) {
   }, /Expected mytype, got undefined/)
 })
 
-tape('TfTypeError is caught by typeforce.oneOf', function (t) {
+tape('TfTypeError is caught by typeforce.anyOf', function (t) {
   t.plan(2)
 
   t.doesNotThrow(function () {
-    typeforce.oneOf(failType)('value')
+    typeforce.anyOf(failType)('value')
   })
 
-  t.ok(!typeforce.oneOf(failType, typeforce.string)('value'))
+  t.ok(!typeforce.anyOf(failType, typeforce.string)('value'))
 })
 
 tape('Error is thrown for bad compile parameters', function (t) {
