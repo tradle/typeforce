@@ -228,11 +228,11 @@ function compile (type) {
   return TYPES.value(type)
 }
 
-function assert (type, value, strict, surrogate) {
+function assert (type, value, strict) {
   if (NATIVE.Function(type)) {
     if (type(value, strict)) return true
 
-    throw new TfTypeError(surrogate || type, value)
+    throw new TfTypeError(type, value)
   }
 
   // JIT
