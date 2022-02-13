@@ -254,6 +254,9 @@ function match (type, value, strict) {
 Object.defineProperty(match, 'error', {
   get: function () {
     return matchRaw.error
+  },
+  set: function (value) {
+    matchRaw.error = value
   }
 })
 

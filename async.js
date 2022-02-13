@@ -11,7 +11,7 @@ function tfAsync (type, value, strict, callback) {
     return callback(e)
   }
 
-  callback()
+  callback(null, true)
 }
 
 module.exports = Object.assign({}, typeforce, {
