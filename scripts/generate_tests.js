@@ -2,6 +2,8 @@
 const typeforce = require('../')
 const TYPES = require('../test/types')
 const VALUES = require('../test/values')
+const fs = require('fs')
+const path = require('path')
 
 const TYPES2 = [
   'Array',
@@ -85,20 +87,15 @@ const VALUESX = [
   -INT53_MAX - 3
 ]
 
-const fixtures = {
-  valid: [],
-  invalid: []
-}
+let fixtures
 
 function addFixture (type, value) {
   const f = {}
   let atype, avalue
 
   if (TYPES[type]) {
-    f.typeId = type
     atype = TYPES[type]
   } else {
-    f.type = type
     atype = type
   }
 
@@ -133,10 +130,36 @@ function addFixture (type, value) {
   }
 }
 
-const ALLTYPES = TYPES2.concat(Object.keys(TYPES))
+const ALLTYPES = TYPES2.map((type, index) => ({ type, id: `2_${index}` })).concat(Object.keys(TYPES).map((type, index) => ({ type, id: `1_${index}` })))
 const ALLVALUES = VALUES2.concat(Object.keys(VALUES))
 
-ALLTYPES.forEach(type => ALLVALUES.forEach(value => addFixture(type, value)))
-ALLTYPES.forEach(type => VALUESX.forEach(value => addFixture(type, value)))
+ALLTYPES.forEach(({ type, id }) => {
+  fixtures = {
+  }
+  if (TYPES[type]) {
+    fixtures.typeId = type
+  } else {
+    fixtures.type = type
+  }
+  Object.assign(fixtures, {
+    valid: [],
+    invalid: []
+  })
+  ALLVALUES.forEach(value => addFixture(type, value))
+  VALUESX.forEach(value => addFixture(type, value))
+  const file = path.join(__dirname, '..', 'test', 'fixtures', `${id}.json`)
+  fs.writeFileSync(file, JSON.stringify(fixtures, null, 2))
+})
 
-console.log(JSON.stringify(fixtures, null, 2))
+fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `module.exports = [
+${ALLTYPES.map(({ id }) => `  require('./fixtures/${id}.json')`).join(',\n')}
+].map(({ type, typeId, valid, invalid }) => ({
+  valid: valid.map(entry => Object.assign(entry, { type, typeId })),
+  invalid: invalid.map(entry => Object.assign(entry, { type, typeId }))
+})).reduce(function (result, next) {
+  return {
+    valid: result.valid.concat(next.valid),
+    invalid: result.invalid.concat(next.invalid)
+  }
+})
+`)
