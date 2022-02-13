@@ -239,8 +239,18 @@ function assert (type, value, strict) {
   return assert(compile(type), value, strict)
 }
 
+function match (type, value, strict) {
+  try {
+    return assert(type, value, strict)
+  } catch (e) {
+    tfNoThrow.error = e
+    return false
+  }
+}
+
 const typeforce = {}
 typeforce.assert = assert
+typeforce.match = match
 // assign types to typeforce function
 for (const typeName in NATIVE) {
   typeforce[typeName] = NATIVE[typeName]

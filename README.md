@@ -121,10 +121,11 @@ assert(typeforce.quacksLike('Foo'), new (function Foo() {}))
 
 **Pro**tips (no throw)
 ``` javascript
-const typeforce = require('typeforce/nothrow')
+const typeforce = require('typeforce')
+const { match } = typeforce
 const value = 'foobar'
 
-if (typeforce(typeforce.Number, value)) {
+if (match(typeforce.Number, value)) {
   // didn't throw!
   console.log(`${value} is a number`) // never happens
 } else {
