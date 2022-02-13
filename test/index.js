@@ -15,11 +15,11 @@ fixtures.valid.forEach(function (f) {
 
   tape('passes ' + typeDescription + ' with ' + valueDescription, function (t) {
     t.plan(6)
-    t.doesNotThrow(function () { typeforce(type, value, f.strict) })
+    t.doesNotThrow(function () { typeforce.assert(type, value, f.strict) })
     typeforceAsync(type, value, f.strict, t.ifErr)
     t.equal(typeforceNoThrow(type, value, f.strict), true)
 
-    t.doesNotThrow(function () { typeforce(compiled, value, f.strict) })
+    t.doesNotThrow(function () { typeforce.assert(compiled, value, f.strict) })
     typeforceAsync(compiled, value, f.strict, t.ifErr)
     t.equal(typeforceNoThrow(compiled, value, f.strict), true)
   })
@@ -38,7 +38,7 @@ fixtures.invalid.forEach(function (f) {
     t.plan(10)
 
     t.throws(function () {
-      typeforce(type, value, f.strict)
+      typeforce.assert(type, value, f.strict)
     }, new RegExp(f.exception))
     typeforceAsync(type, value, f.strict, (err) => {
       t.ok(err)
@@ -48,7 +48,7 @@ fixtures.invalid.forEach(function (f) {
     t.throws(function () { throw typeforceNoThrow.error }, new RegExp(f.exception))
 
     t.throws(function () {
-      typeforce(compiled, value, f.strict)
+      typeforce.assert(compiled, value, f.strict)
     }, new RegExp(f.exception))
     typeforceAsync(compiled, value, f.strict, (err) => {
       t.ok(err)
@@ -68,7 +68,7 @@ tape('TfTypeError is an Error', function (t) {
   t.equal(err.message, 'Expected mytype, got undefined')
 
   t.throws(function () {
-    typeforce(failType, 0xdeadbeef)
+    typeforce.assert(failType, 0xdeadbeef)
   }, /Expected mytype, got undefined/)
 })
 

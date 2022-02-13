@@ -22,7 +22,7 @@ const TYPES = {
 
       return array.every(function (value, i) {
         try {
-          return typeforce(type, value, strict)
+          return typeforce.assert(type, value, strict)
         } catch (e) {
           throw tfSubError(e, i)
         }
@@ -65,7 +65,7 @@ const TYPES = {
       for (const propertyName in value) {
         try {
           if (propertyKeyType) {
-            typeforce(propertyKeyType, propertyName, strict)
+            assert(propertyKeyType, propertyName, strict)
           }
         } catch (e) {
           throw tfSubError(e, propertyName, 'key')
@@ -73,7 +73,7 @@ const TYPES = {
 
         try {
           const propertyValue = value[propertyName]
-          typeforce(propertyType, propertyValue, strict)
+          assert(propertyType, propertyValue, strict)
         } catch (e) {
           throw tfSubError(e, propertyName)
         }
@@ -111,7 +111,7 @@ const TYPES = {
           const propertyType = type[propertyName]
           const propertyValue = value[propertyName]
 
-          typeforce(propertyType, propertyValue, strict)
+          assert(propertyType, propertyValue, strict)
         }
       } catch (e) {
         throw tfSubError(e, propertyName)
@@ -138,7 +138,7 @@ const TYPES = {
     function _anyOf (value, strict) {
       return types.some(function (type) {
         try {
-          return typeforce(type, value, strict)
+          return assert(type, value, strict)
         } catch (e) {
           return false
         }
@@ -155,7 +155,7 @@ const TYPES = {
     function _allOf (value, strict) {
       return types.every(function (type) {
         try {
-          return typeforce(type, value, strict)
+          return assert(type, value, strict)
         } catch (e) {
           return false
         }
@@ -185,7 +185,7 @@ const TYPES = {
 
       return types.every(function (type, i) {
         try {
-          return typeforce(type, values[i], strict)
+          return assert(type, values[i], strict)
         } catch (e) {
           throw tfSubError(e, i)
         }
@@ -228,7 +228,7 @@ function compile (type) {
   return TYPES.value(type)
 }
 
-function typeforce (type, value, strict, surrogate) {
+function assert (type, value, strict, surrogate) {
   if (NATIVE.Function(type)) {
     if (type(value, strict)) return true
 
@@ -236,9 +236,11 @@ function typeforce (type, value, strict, surrogate) {
   }
 
   // JIT
-  return typeforce(compile(type), value, strict)
+  return assert(compile(type), value, strict)
 }
 
+const typeforce = {}
+typeforce.assert = assert
 // assign types to typeforce function
 for (const typeName in NATIVE) {
   typeforce[typeName] = NATIVE[typeName]
@@ -252,7 +254,6 @@ const EXTRA = require('./extra')
 for (const typeName in EXTRA) {
   typeforce[typeName] = EXTRA[typeName]
 }
-
 typeforce.compile = compile
 typeforce.TfTypeError = TfTypeError
 typeforce.TfPropertyTypeError = TfPropertyTypeError

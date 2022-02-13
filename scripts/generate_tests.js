@@ -111,14 +111,14 @@ function addFixture (type, value) {
   }
 
   try {
-    typeforce(atype, avalue, true)
+    typeforce.assert(atype, avalue, true)
     fixtures.valid.push(f)
   } catch (e) {
     let message = e.message
       .replace(/([.*+?^=!:${}[\]/\\()])/g, '\\$&')
 
     try {
-      typeforce(atype, avalue, false)
+      typeforce.assert(atype, avalue, false)
       fixtures.valid.push(f)
 
       if (message.indexOf('asciiSlice') !== -1) return
