@@ -228,28 +228,39 @@ function compile (type) {
   return TYPES.value(type)
 }
 
-function assert (type, value, strict) {
-  if (NATIVE.Function(type)) {
-    if (type(value, strict)) return true
+function assertRaw (type, value, strict) {
+  if (type(value, strict)) return true
 
-    throw new TfTypeError(type, value)
-  }
-
-  // JIT
-  return assert(compile(type), value, strict)
+  throw new TfTypeError(type, value)
 }
 
-function match (type, value, strict) {
+function assert (type, value, strict) {
+  return assertRaw(NATIVE.Function(type) ? type : compile(type), value, strict)
+}
+
+function matchRaw (type, value, strict) {
   try {
-    return assert(type, value, strict)
+    return assertRaw(type, value, strict)
   } catch (e) {
     match.error = e
     return false
   }
 }
 
+function match (type, value, strict) {
+  return matchRaw(NATIVE.Function(type) ? type : compile(type), value, strict)
+}
+
+Object.defineProperty(match, 'error', {
+  get: function () {
+    return matchRaw.error
+  }
+})
+
 const typeforce = {}
+typeforce.assertRaw = assertRaw
 typeforce.assert = assert
+typeforce.matchRaw = matchRaw
 typeforce.match = match
 // assign types to typeforce function
 for (const typeName in NATIVE) {
