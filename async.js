@@ -6,7 +6,7 @@ function tfAsync (type, value, strict, callback) {
   if (typeof strict === 'function') return tfAsync(type, value, false, strict)
 
   try {
-    typeforce(type, value, strict)
+    typeforce.assert(type, value, strict)
   } catch (e) {
     return callback(e)
   }
@@ -14,4 +14,6 @@ function tfAsync (type, value, strict, callback) {
   callback()
 }
 
-module.exports = Object.assign(tfAsync, typeforce)
+module.exports = Object.assign({}, typeforce, {
+  assert: tfAsync
+})
