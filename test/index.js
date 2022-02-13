@@ -16,11 +16,11 @@ fixtures.valid.forEach(function (f) {
   tape('passes ' + typeDescription + ' with ' + valueDescription, function (t) {
     t.plan(6)
     t.doesNotThrow(function () { typeforce.assert(type, value, f.strict) })
-    typeforceAsync(type, value, f.strict, t.ifErr)
+    typeforceAsync.assert(type, value, f.strict, t.ifErr)
     t.equal(typeforceNoThrow(type, value, f.strict), true)
 
     t.doesNotThrow(function () { typeforce.assert(compiled, value, f.strict) })
-    typeforceAsync(compiled, value, f.strict, t.ifErr)
+    typeforceAsync.assert(compiled, value, f.strict, t.ifErr)
     t.equal(typeforceNoThrow(compiled, value, f.strict), true)
   })
 })
@@ -40,7 +40,7 @@ fixtures.invalid.forEach(function (f) {
     t.throws(function () {
       typeforce.assert(type, value, f.strict)
     }, new RegExp(f.exception))
-    typeforceAsync(type, value, f.strict, (err) => {
+    typeforceAsync.assert(type, value, f.strict, (err) => {
       t.ok(err)
       t.throws(function () { throw err }, new RegExp(f.exception))
     })
@@ -50,7 +50,7 @@ fixtures.invalid.forEach(function (f) {
     t.throws(function () {
       typeforce.assert(compiled, value, f.strict)
     }, new RegExp(f.exception))
-    typeforceAsync(compiled, value, f.strict, (err) => {
+    typeforceAsync.assert(compiled, value, f.strict, (err) => {
       t.ok(err)
       t.throws(function () { throw err }, new RegExp(f.exception))
     })
