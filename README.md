@@ -9,19 +9,20 @@ Exception messages may change between patch versions,  as often the patch will c
 
 ``` javascript
 const typeforce = require('typeforce')
+const { assert } = typeforce
 
 // supported primitives 'Array', 'Boolean', 'Buffer', 'Number', 'Object', 'String'
-typeforce('Array', [])
+assert('Array', [])
 
-typeforce('Number', [])
+assert('Number', [])
 // TypeError: Expected Number, got Array
 
 // array types
-typeforce(['Object'], [{}])
-typeforce(typeforce.arrayOf('Object'), [{}, {}, {}])
+assert(['Object'], [{}])
+assert(typeforce.arrayOf('Object'), [{}, {}, {}])
 
 // enforces object properties 
-typeforce({
+assert({
   foo: 'Number'
 }, {
   foo: 'bar'
@@ -29,20 +30,20 @@ typeforce({
 // TypeError: Expected property "foo" of type Number, got String "bar"
 
 // maybe types
-typeforce('?Number', 2)
-typeforce('?Number', null)
-typeforce(typeforce.maybe(typeforce.Number), 2)
-typeforce(typeforce.maybe(typeforce.Number), null)
+assert('?Number', 2)
+assert('?Number', null)
+assert(typeforce.maybe(typeforce.Number), 2)
+assert(typeforce.maybe(typeforce.Number), null)
 
 // sum types
-typeforce(typeforce.anyOf('String', 'Number'), 2)
-typeforce(typeforce.allOf({ x: typeforce.Number }, { y: typeforce.Number }), {
+assert(typeforce.anyOf('String', 'Number'), 2)
+assert(typeforce.allOf({ x: typeforce.Number }, { y: typeforce.Number }), {
   x: 1,
   y: 2
 })
 
 // value types
-typeforce(typeforce.value(3.14), 3.14)
+assert(typeforce.value(3.14), 3.14)
 
 // custom types
 function LongString (value, strict) {
@@ -51,17 +52,17 @@ function LongString (value, strict) {
   return true
 }
 
-typeforce(LongString, '00000000000000000000000000000000')
+assert(LongString, '00000000000000000000000000000000')
 // => OK!
 
-typeforce(LongString, 'not long enough')
+assert(LongString, 'not long enough')
 // TypeError: Expected LongString, got String 'not long enough'
 ```
 
 **Pro**tips:
 ``` javascript
 // use precompiled primitives for high performance
-typeforce(typeforce.Array, array)
+assert(typeforce.Array, array)
 
 // or just precompile a template
 const type = {
@@ -76,12 +77,12 @@ const fastType = typeforce.compile(type)
 // })
 
 // use strictness for recursive types to enforce whitelisting properties
-typeforce({
+assert({
   x: 'Number'
 }, { x: 1 }, true)
 // OK!
 
-typeforce({
+assert({
   x: 'Number'
 }, { x: 1, y: 2 }, true)
 // TypeError: Unexpected property 'y' of type Number
@@ -89,18 +90,18 @@ typeforce({
 
 **Pro**tips (extended types):
 ``` javascript
-typeforce(typeforce.tuple('String', 'Number'), ['foo', 1])
+assert(typeforce.tuple('String', 'Number'), ['foo', 1])
 // OK!
 
-typeforce(typeforce.tuple('Number', 'Number'), ['not a number', 1])
+assert(typeforce.tuple('Number', 'Number'), ['not a number', 1])
 // TypeError: Expected property "0" of type Number, got String 'not a number'
 
-typeforce(typeforce.map('Number'), {
+assert(typeforce.map('Number'), {
   'anyKeyIsOK': 1
 })
 // OK!
 
-typeforce(typeforce.map('Number', typeforce.HexN(8)), {
+assert(typeforce.map('Number', typeforce.HexN(8)), {
   'deadbeef': 1,
   'ffff0000': 2
 })
@@ -110,11 +111,11 @@ function Foo () {
   this.x = 2
 }
 
-typeforce(typeforce.quacksLike('Foo'), new Foo())
+assert(typeforce.quacksLike('Foo'), new Foo())
 // OK!
 
 // Note, any Foo will do
-typeforce(typeforce.quacksLike('Foo'), new (function Foo() {}))
+assert(typeforce.quacksLike('Foo'), new (function Foo() {}))
 // OK!
 ```
 
@@ -135,8 +136,9 @@ if (typeforce(typeforce.Number, value)) {
 **Pro**tips (async)
 ``` javascript
 const typeforce = require('typeforce/async')
+const { assert } = typeforce
 
-typeforce(typeforce.Number, value, function (err) {
+assert(typeforce.Number, value, function (err) {
   if (err) return console.log(`Oops, ${typeforce.error.message}`)
 
   console.log(`${value} is a number`) // never happens
