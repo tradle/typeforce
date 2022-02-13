@@ -242,7 +242,7 @@ function matchRaw (type, value, strict) {
   try {
     return assertRaw(type, value, strict)
   } catch (e) {
-    match.error = e
+    matchRaw.error = e
     return false
   }
 }
