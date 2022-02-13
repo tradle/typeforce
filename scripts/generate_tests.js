@@ -4,6 +4,7 @@ const TYPES = require('../test/types')
 const VALUES = require('../test/values')
 const fs = require('fs')
 const path = require('path')
+const util = require('util')
 
 const TYPES2 = [
   'Array',
@@ -147,12 +148,14 @@ ALLTYPES.forEach(({ type, id }) => {
   })
   ALLVALUES.forEach(value => addFixture(type, value))
   VALUESX.forEach(value => addFixture(type, value))
-  const file = path.join(__dirname, '..', 'test', 'fixtures', `${id}.json`)
-  fs.writeFileSync(file, JSON.stringify(fixtures, null, 2))
+  const file = path.join(__dirname, '..', 'test', 'fixtures', `${id}.js`)
+  fs.writeFileSync(file, `
+module.exports = ${util.inspect(fixtures, { depth: Infinity })}
+`)
 })
 
 fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `module.exports = [
-${ALLTYPES.map(({ id }) => `  require('./fixtures/${id}.json')`).join(',\n')}
+${ALLTYPES.map(({ id }) => `  require('./fixtures/${id}.js')`).join(',\n')}
 ].map(({ type, typeId, valid, invalid }) => ({
   valid: valid.map(entry => Object.assign(entry, { type, typeId })),
   invalid: invalid.map(entry => Object.assign(entry, { type, typeId }))
