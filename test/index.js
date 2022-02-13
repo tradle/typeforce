@@ -1,35 +1,9 @@
 const tape = require('tape')
 const typeforce = require('../')
 const typeforceAsync = require('../async')
-const fixtures = require('./fixtures')
-const TYPES = require('./types')
-const VALUES = require('./values')
 
-function tests (t, compiled) {
-  return {
-    valid (valid) {
-      const value = VALUES[valid.valueId] || valid.value
-      t.equal(typeforce.match(compiled, value, valid.strict), true, 'passes with ' + JSON.stringify(value))
-    },
-    invalid (invalid) {
-      if (!invalid.exception) throw new TypeError('Expected exception')
-      const value = VALUES[invalid.valueId] || invalid.value
-      t.throws(function () {
-        typeforce.assert(compiled, value, invalid.strict)
-      }, new RegExp(invalid.exception), 'throws "' + invalid.exception + '" with value of ' + JSON.stringify(value))
-    }
-  }
-}
-
-fixtures.forEach(function (fixture) {
-  const type = TYPES[fixture.typeId] || fixture.type
-  tape(`type: ${JSON.stringify(type)}`, t => {
-    const { valid, invalid } = tests(t, typeforce.compile(type))
-    fixture.valid.forEach(valid)
-    fixture.invalid.forEach(invalid)
-    t.end()
-  })
-})
+// Load fixtures test!
+require('./fixtures')
 
 const err = new typeforce.TfTypeError('mytype')
 function failType () { throw err }

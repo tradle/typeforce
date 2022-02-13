@@ -134,27 +134,37 @@ function addFixture (type, value) {
 const ALLTYPES = TYPES2.map((type, index) => ({ type, id: `2_${index}` })).concat(Object.keys(TYPES).map((type, index) => ({ type, id: `1_${index}` })))
 const ALLVALUES = VALUES2.concat(Object.keys(VALUES))
 
+// Safe(r) inspect variant that indents by 2
+const inspect = val => util.inspect(val, {
+  depth: Infinity,
+  maxArrayLength: Infinity,
+  maxStringLength: Infinity,
+  breakLength: 100
+}).split('\n').map((line, i) => `${i > 0 ? '  ' : ''}${line}`).join('\n')
+
 ALLTYPES.forEach(({ type, id }) => {
   fixtures = {
-  }
-  if (TYPES[type]) {
-    fixtures.typeId = type
-  } else {
-    fixtures.type = type
-  }
-  Object.assign(fixtures, {
     valid: [],
     invalid: []
-  })
+  }
   ALLVALUES.forEach(value => addFixture(type, value))
   VALUESX.forEach(value => addFixture(type, value))
   const file = path.join(__dirname, '..', 'test', 'fixtures', `${id}.js`)
-  fs.writeFileSync(file, `
-module.exports = ${util.inspect(fixtures, { depth: Infinity })}
+  fs.writeFileSync(file, `const tests = require('./tests.js')
+const tape = require('tape')${
+  TYPES[type] ? `\nconst TYPES = require('../types')` : ''
+}
+
+tape('type: ${JSON.stringify(type)}', t => {
+  const { ${
+    ['valid', 'invalid'].filter(entry => fixtures[entry].length > 0).join(', ')
+  } } = tests(t, ${TYPES[type] ? `TYPES['${type}']` : inspect(type)})${
+    fixtures.valid.map(valid => `\n  valid(${inspect(valid)})`)}${
+    fixtures.invalid.map(invalid => `\n  invalid(${inspect(invalid)})`)}
+  t.end()
+})
 `)
 })
 
-fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `module.exports = [
-${ALLTYPES.map(({ id }) => `  require('./fixtures/${id}.js')`).join(',\n')}
-]
+fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `${ALLTYPES.map(({ id }) => `require('./fixtures/${id}.js')`).join('\n')}
 `)
