@@ -243,7 +243,7 @@ function match (type, value, strict) {
   try {
     return assert(type, value, strict)
   } catch (e) {
-    tfNoThrow.error = e
+    match.error = e
     return false
   }
 }
