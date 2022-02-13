@@ -8,7 +8,7 @@ const TYPES2 = [
   'Boolean',
   'Buffer',
   'Function',
-  'Null',
+  'Nil',
   'Number',
   'Object',
   'String',

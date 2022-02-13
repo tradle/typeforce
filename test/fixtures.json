@@ -75,10 +75,10 @@
       "valueId": "function"
     },
     {
-      "type": "Null"
+      "type": "Nil"
     },
     {
-      "type": "Null",
+      "type": "Nil",
       "value": null
     },
     {
@@ -3787,56 +3787,56 @@
     },
     {
       "exception": "Expected Null, got String \"\"",
-      "type": "Null",
+      "type": "Nil",
       "value": ""
     },
     {
       "exception": "Expected Null, got String \"foobar\"",
-      "type": "Null",
+      "type": "Nil",
       "value": "foobar"
     },
     {
       "exception": "Expected Null, got Number 0",
-      "type": "Null",
+      "type": "Nil",
       "value": 0
     },
     {
       "exception": "Expected Null, got Number 1",
-      "type": "Null",
+      "type": "Nil",
       "value": 1
     },
     {
       "exception": "Expected Null, got Number 1\\.5",
-      "type": "Null",
+      "type": "Nil",
       "value": 1.5
     },
     {
       "exception": "Expected Null, got Number 10",
-      "type": "Null",
+      "type": "Nil",
       "value": 10
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "value": []
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "value": [
         0
       ]
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "value": [
         "foobar"
       ]
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "value": [
         {
           "a": 0
@@ -3845,43 +3845,43 @@
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "value": [
         null
       ]
     },
     {
       "exception": "Expected Null, got Boolean false",
-      "type": "Null",
+      "type": "Nil",
       "value": false
     },
     {
       "exception": "Expected Null, got Boolean true",
-      "type": "Null",
+      "type": "Nil",
       "value": true
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {}
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": null
       }
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": 0
       }
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": 0,
         "b": 0
@@ -3889,14 +3889,14 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "b": 0
       }
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": {
           "b": 0
@@ -3905,7 +3905,7 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": {
           "b": null
@@ -3914,7 +3914,7 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": {
           "b": {
@@ -3925,7 +3925,7 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": {
           "b": {
@@ -3936,7 +3936,7 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": {
           "b": {
@@ -3948,7 +3948,7 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": "foo",
         "b": "bar"
@@ -3956,7 +3956,7 @@
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "value": {
         "a": "foo",
         "b": {
@@ -3966,102 +3966,102 @@
     },
     {
       "exception": "Expected Null, got Function",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "function"
     },
     {
       "exception": "Expected Null, got EmptyType",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "emptyType"
     },
     {
       "exception": "Expected Null, got CustomType",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "customType"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ a: undefined }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ a: Buffer3 }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ a: Buffer10 }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ a: { b: Buffer3 } }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ a: { b: Buffer10 } }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ x: 1 }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ y: 2 }"
     },
     {
       "exception": "Expected Null, got Object",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "{ x: 1, y: 2 }"
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Array5"
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Array6"
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Array7-N"
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Array6-S"
     },
     {
       "exception": "Expected Null, got Array",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Array7"
     },
     {
       "exception": "Expected Null, got Buffer",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Buffer"
     },
     {
       "exception": "Expected Null, got Buffer",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Buffer3"
     },
     {
       "exception": "Expected Null, got Buffer",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "Buffer10"
     },
     {
       "exception": "Expected Null, got String \"boop\"",
-      "type": "Null",
+      "type": "Nil",
       "valueId": "String4"
     },
     {
@@ -6336,7 +6336,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "type": {},
       "valueId": "Buffer"
@@ -11888,7 +11888,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "?{ a: ?Number }",
       "valueId": "Buffer"
@@ -12433,7 +12433,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "{ a: Number|Nil }",
       "valueId": "Buffer"
@@ -12975,7 +12975,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "{ a: ?{ b: Number } }",
       "valueId": "Buffer"
@@ -13236,7 +13236,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "{ a: ?{ b: ?{ c: Number } } }",
       "valueId": "Buffer"
@@ -13521,7 +13521,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "{ a: undefined }",
       "valueId": "Buffer"
@@ -13806,7 +13806,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "@{ a: undefined }",
       "valueId": "Buffer"
@@ -14651,7 +14651,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Unexpected property \"readUIntLE\"",
+      "exception": "Unexpected property \"readBigUInt64LE\"",
       "strict": true,
       "typeId": "{ a: ?Unmatchable }",
       "valueId": "Buffer"
@@ -15473,7 +15473,7 @@
       "valueId": "Array7-N"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type String, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type String, got Function",
       "typeId": "{ String }",
       "valueId": "Buffer"
     },
@@ -15657,17 +15657,17 @@
       "valueId": "{ a: { b: Buffer10 } }"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type String|Number, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type String|Number, got Function",
       "typeId": "{ String|Number }",
       "valueId": "Buffer"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type String|Number, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type String|Number, got Function",
       "typeId": "{ String|Number }",
       "valueId": "Buffer3"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type String|Number, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type String|Number, got Function",
       "typeId": "{ String|Number }",
       "valueId": "Buffer10"
     },
@@ -15866,17 +15866,17 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type Number, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type Number, got Function",
       "typeId": "{ String: Number }",
       "valueId": "Buffer"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type Number, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type Number, got Function",
       "typeId": "{ String: Number }",
       "valueId": "Buffer3"
     },
     {
-      "exception": "Expected property \"readUIntLE\" of type Number, got Function",
+      "exception": "Expected property \"readBigUInt64LE\" of type Number, got Function",
       "typeId": "{ String: Number }",
       "valueId": "Buffer10"
     },
@@ -16097,7 +16097,7 @@
       "valueId": "Array7"
     },
     {
-      "exception": "Expected property \"readUIntLE\" with key type Letter, got String \"readUIntLE\"",
+      "exception": "Expected property \"readBigUInt64LE\" with key type Letter, got String \"readBigUInt64LE\"",
       "typeId": "{ Letter: Number }",
       "valueId": "Buffer"
     },
@@ -23729,92 +23729,92 @@
     },
     {
       "exception": "Expected Null, got String \"fff\"",
-      "type": "Null",
+      "type": "Nil",
       "value": "fff"
     },
     {
       "exception": "Expected Null, got String \"cafe1122deadbeef\"",
-      "type": "Null",
+      "type": "Nil",
       "value": "cafe1122deadbeef"
     },
     {
       "exception": "Expected Null, got String \"0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20\"",
-      "type": "Null",
+      "type": "Nil",
       "value": "0102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f20"
     },
     {
       "exception": "Expected Null, got Number -1",
-      "type": "Null",
+      "type": "Nil",
       "value": -1
     },
     {
       "exception": "Expected Null, got Number 127",
-      "type": "Null",
+      "type": "Nil",
       "value": 127
     },
     {
       "exception": "Expected Null, got Number 128",
-      "type": "Null",
+      "type": "Nil",
       "value": 128
     },
     {
       "exception": "Expected Null, got Number 255",
-      "type": "Null",
+      "type": "Nil",
       "value": 255
     },
     {
       "exception": "Expected Null, got Number 256",
-      "type": "Null",
+      "type": "Nil",
       "value": 256
     },
     {
       "exception": "Expected Null, got Number -128",
-      "type": "Null",
+      "type": "Nil",
       "value": -128
     },
     {
       "exception": "Expected Null, got Number -129",
-      "type": "Null",
+      "type": "Nil",
       "value": -129
     },
     {
       "exception": "Expected Null, got Number 65534",
-      "type": "Null",
+      "type": "Nil",
       "value": 65534
     },
     {
       "exception": "Expected Null, got Number 65535",
-      "type": "Null",
+      "type": "Nil",
       "value": 65535
     },
     {
       "exception": "Expected Null, got Number 65536",
-      "type": "Null",
+      "type": "Nil",
       "value": 65536
     },
     {
       "exception": "Expected Null, got Number 4294967295",
-      "type": "Null",
+      "type": "Nil",
       "value": 4294967295
     },
     {
       "exception": "Expected Null, got Number 9007199254740991",
-      "type": "Null",
+      "type": "Nil",
       "value": 9007199254740991
     },
     {
       "exception": "Expected Null, got Number 9007199254740994",
-      "type": "Null",
+      "type": "Nil",
       "value": 9007199254740994
     },
     {
       "exception": "Expected Null, got Number -9007199254740991",
-      "type": "Null",
+      "type": "Nil",
       "value": -9007199254740991
     },
     {
       "exception": "Expected Null, got Number -9007199254740994",
-      "type": "Null",
+      "type": "Nil",
       "value": -9007199254740994
     },
     {
