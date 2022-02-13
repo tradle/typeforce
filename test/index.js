@@ -1,7 +1,6 @@
 const tape = require('tape')
 const typeforce = require('../')
 const typeforceAsync = require('../async')
-const typeforceNoThrow = require('../nothrow')
 const fixtures = require('./fixtures')
 const TYPES = require('./types')
 const VALUES = require('./values')
@@ -17,11 +16,11 @@ fixtures.valid.forEach(function (f) {
     t.plan(6)
     t.doesNotThrow(function () { typeforce.assert(type, value, f.strict) })
     typeforceAsync.assert(type, value, f.strict, t.ifErr)
-    t.equal(typeforceNoThrow(type, value, f.strict), true)
+    t.equal(typeforce.match(type, value, f.strict), true)
 
     t.doesNotThrow(function () { typeforce.assert(compiled, value, f.strict) })
     typeforceAsync.assert(compiled, value, f.strict, t.ifErr)
-    t.equal(typeforceNoThrow(compiled, value, f.strict), true)
+    t.equal(typeforce.match(compiled, value, f.strict), true)
   })
 })
 
@@ -44,8 +43,8 @@ fixtures.invalid.forEach(function (f) {
       t.ok(err)
       t.throws(function () { throw err }, new RegExp(f.exception))
     })
-    t.equal(typeforceNoThrow(type, value, f.strict), false)
-    t.throws(function () { throw typeforceNoThrow.error }, new RegExp(f.exception))
+    t.equal(typeforce.match(type, value, f.strict), false)
+    t.throws(function () { throw typeforce.match.error }, new RegExp(f.exception))
 
     t.throws(function () {
       typeforce.assert(compiled, value, f.strict)
@@ -54,8 +53,8 @@ fixtures.invalid.forEach(function (f) {
       t.ok(err)
       t.throws(function () { throw err }, new RegExp(f.exception))
     })
-    t.equal(typeforceNoThrow(compiled, value, f.strict), false)
-    t.throws(function () { throw typeforceNoThrow.error }, new RegExp(f.exception))
+    t.equal(typeforce.match(compiled, value, f.strict), false)
+    t.throws(function () { throw typeforce.match.error }, new RegExp(f.exception))
   })
 })
 
