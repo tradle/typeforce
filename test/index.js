@@ -8,6 +8,26 @@ require('./fixtures')
 const err = new typeforce.TfTypeError('mytype')
 function failType () { throw err }
 
+tape('serialization', function (t) {
+  t.equals(typeforce.maybe(typeforce.oneOf('String', 'Number')).toJSON(), '?String|Number')
+  t.equals(typeforce.maybe(typeforce.tuple('String', 'Number')).toJSON(), '?(String, Number)')
+  t.equals(typeforce.maybe(typeforce.arrayOf('String')).toJSON(), '?[String]')
+  t.equals(typeforce.maybe(typeforce.map('String')).toJSON(), '?{String}')
+  t.equals(typeforce.maybe(typeforce.object({ foo: 'String' })).toJSON(), '?Object')
+  t.equals(typeforce.object({ foo: ['String']}).toJSON(), 'Object')
+  t.end()
+})
+
+tape('custom Errors', function (t) {
+  t.equals((new typeforce.TfTypeError('hello')).message, 'Expected hello, got undefined')
+  t.equals((new typeforce.TfTypeError(['hello'])).message, 'Expected Array, got undefined')
+  t.equals((new typeforce.TfTypeError(null)).message, 'Expected null, got undefined')
+  t.equals((new typeforce.TfTypeError(undefined)).message, 'Expected , got undefined')
+  t.equals((new typeforce.TfTypeError({ hello: 'world' })).message, 'Expected Object, got undefined')
+  t.equals((new typeforce.TfTypeError(function test () {})).message, 'Expected test, got undefined')
+  t.end()
+})
+
 tape('match variants', function (t) {
   t.test('typeforce.match', function (t) {
     t.equals(typeforce.match(() => false, true), false, 'non match should result in false')
