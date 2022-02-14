@@ -14,7 +14,7 @@ tape('serialization', function (t) {
   t.equals(typeforce.maybe(typeforce.arrayOf('String')).toJSON(), '?[String]')
   t.equals(typeforce.maybe(typeforce.map('String')).toJSON(), '?{String}')
   t.equals(typeforce.maybe(typeforce.object({ foo: 'String' })).toJSON(), '?Object')
-  t.equals(typeforce.object({ foo: ['String']}).toJSON(), 'Object')
+  t.equals(typeforce.object({ foo: ['String'] }).toJSON(), 'Object')
   t.end()
 })
 

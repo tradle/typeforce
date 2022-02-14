@@ -22,7 +22,7 @@ module.exports = {
   Buffer3: buffer3,
   Buffer10: buffer10,
   String4: 'boop',
-  'Finite': 1,
+  Finite: 1,
   '+Infinity': +Infinity,
   '-Infinity': -Infinity
 }

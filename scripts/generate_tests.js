@@ -153,7 +153,7 @@ ALLTYPES.forEach(({ type, id }) => {
   const file = path.join(__dirname, '..', 'test', 'fixtures', `${id}.js`)
   fs.writeFileSync(file, `const tests = require('./tests.js')
 const tape = require('fresh-tape')${
-  TYPES[type] ? `\nconst TYPES = require('../types')` : ''
+  TYPES[type] ? '\nconst TYPES = require(\'../types\')' : ''
 }
 
 tape('type: ${JSON.stringify(type)}', t => {

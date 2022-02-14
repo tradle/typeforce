@@ -73,9 +73,9 @@ const TYPES = {
       }
 
       return true
-    }, propertyKeyType ?
-      '{' + propertyKeyType.toJSON() + ': ' + propertyType.toJSON() + '}' :
-      '{' + propertyType.toJSON() + '}')
+    }, propertyKeyType
+      ? '{' + propertyKeyType.toJSON() + ': ' + propertyType.toJSON() + '}'
+      : '{' + propertyType.toJSON() + '}')
   },
 
   object: function object (uncompiled) {

@@ -10,6 +10,9 @@
     "exceptions",
     "force"
   ],
+  "standard": {
+    "ignore": "test/fixtures/*"
+  },
   "homepage": "https://github.com/dcousens/typeforce",
   "bugs": {
     "url": "https://github.com/dcousens/typeforce/issues"
