@@ -34,6 +34,8 @@ tape('match variants', function (t) {
     t.equals(typeforce.match(() => true, 1), true, 'match is checked as well')
     t.equals(typeforce.match('String', 1), false, 'error is caught')
     t.match(typeforce.match.error.message, /Expected String, got Number 1/, 'error is kept in global')
+    typeforce.match(() => true, 1)
+    t.match(typeforce.match.error.message, /Expected String, got Number 1/, 'additional calls dont delete the error message')
     typeforce.match.error = null
     t.equals(typeforce.match.error, null, 'error can be cleared')
     t.end()
@@ -42,9 +44,11 @@ tape('match variants', function (t) {
     t.equals(typeforce.compile(() => false).match(true), false, 'non match should result in false')
     t.equals(typeforce.compile(() => true).match(1), true, 'match is checked as well')
     const testError = new Error('test error ')
-    const fn = () => { throw testError }
+    const fn = (input) => { if (input === null) { throw testError } return true }
     t.equals(typeforce.compile(fn).match(null), false, 'error is caught')
     t.equals(fn.match.error, testError, 'error is kept in global')
+    t.equals(fn.match('anything but null'), true, 'second run works too')
+    t.equals(fn.match.error, testError, 'follow up run dont clear the error')
     fn.error = null
     t.equals(fn.error, null, 'error can be cleared')
     t.end()
