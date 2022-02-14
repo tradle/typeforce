@@ -45,49 +45,49 @@ tape('type: "{ a: Number|Nil }"', t => {
   invalid({ exception: 'Unexpected property "b"', strict: true, value: { a: 0, b: 0 } }),
   invalid({ exception: 'Unexpected property "b"', strict: true, value: { b: 0 } }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     value: { a: { b: 0 } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     value: { a: { b: null } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     value: { a: { b: { c: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     value: { a: { b: { c: null } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     value: { a: { b: { c: 0, d: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got String "foo"',
+    exception: 'Expected property "a" of type Number|Null, got String "foo"',
     value: { a: 'foo', b: 'bar' }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got String "foo"',
+    exception: 'Expected property "a" of type Number|Null, got String "foo"',
     value: { a: 'foo', b: { c: 'bar' } }
   }),
   invalid({ exception: 'Expected Object, got Function', valueId: 'function' }),
   invalid({ exception: 'Unexpected property "x"', strict: true, valueId: 'customType' }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Buffer',
+    exception: 'Expected property "a" of type Number|Null, got Buffer',
     valueId: '{ a: Buffer3 }'
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Buffer',
+    exception: 'Expected property "a" of type Number|Null, got Buffer',
     valueId: '{ a: Buffer10 }'
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     valueId: '{ a: { b: Buffer3 } }'
   }),
   invalid({
-    exception: 'Expected property "a" of type Number|Nil, got Object',
+    exception: 'Expected property "a" of type Number|Null, got Object',
     valueId: '{ a: { b: Buffer10 } }'
   }),
   invalid({ exception: 'Unexpected property "x"', strict: true, valueId: '{ x: 1 }' }),

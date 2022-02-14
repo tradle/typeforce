@@ -75,8 +75,6 @@ const TYPES = {
     }, propertyKeyType ?
       '{' + tfJSON(propertyKeyType) + ': ' + tfJSON(propertyType) + '}' :
       '{' + tfJSON(propertyType) + '}')
-
-    return _map
   },
 
   object: function object (uncompiled) {
