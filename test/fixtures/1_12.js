@@ -39,57 +39,51 @@ tape('type: "{ a: undefined }"', t => {
   invalid({ exception: 'Expected Object, got Boolean true', value: true }),
   invalid({ exception: 'Expected Object, got undefined', value: undefined }),
   invalid({ exception: 'Expected Object, got null', value: null }),
-  invalid({ exception: 'Expected property "a" of type undefined, got null', value: { a: null } }),
-  invalid({ exception: 'Expected property "a" of type undefined, got Number 0', value: { a: 0 } }),
-  invalid({
-    exception: 'Expected property "a" of type undefined, got Number 0',
-    value: { a: 0, b: 0 }
-  }),
+  invalid({ exception: 'Expected property "a" of type _value, got null', value: { a: null } }),
+  invalid({ exception: 'Expected property "a" of type _value, got Number 0', value: { a: 0 } }),
+  invalid({ exception: 'Expected property "a" of type _value, got Number 0', value: { a: 0, b: 0 } }),
   invalid({ exception: 'Unexpected property "b"', strict: true, value: { b: 0 } }),
+  invalid({ exception: 'Expected property "a" of type _value, got Object', value: { a: { b: 0 } } }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
-    value: { a: { b: 0 } }
-  }),
-  invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
+    exception: 'Expected property "a" of type _value, got Object',
     value: { a: { b: null } }
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
+    exception: 'Expected property "a" of type _value, got Object',
     value: { a: { b: { c: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
+    exception: 'Expected property "a" of type _value, got Object',
     value: { a: { b: { c: null } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
+    exception: 'Expected property "a" of type _value, got Object',
     value: { a: { b: { c: 0, d: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got String "foo"',
+    exception: 'Expected property "a" of type _value, got String "foo"',
     value: { a: 'foo', b: 'bar' }
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got String "foo"',
+    exception: 'Expected property "a" of type _value, got String "foo"',
     value: { a: 'foo', b: { c: 'bar' } }
   }),
   invalid({ exception: 'Expected Object, got Function', valueId: 'function' }),
   invalid({ exception: 'Unexpected property "x"', strict: true, valueId: 'customType' }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Buffer',
+    exception: 'Expected property "a" of type _value, got Buffer',
     valueId: '{ a: Buffer3 }'
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Buffer',
+    exception: 'Expected property "a" of type _value, got Buffer',
     valueId: '{ a: Buffer10 }'
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
+    exception: 'Expected property "a" of type _value, got Object',
     valueId: '{ a: { b: Buffer3 } }'
   }),
   invalid({
-    exception: 'Expected property "a" of type undefined, got Object',
+    exception: 'Expected property "a" of type _value, got Object',
     valueId: '{ a: { b: Buffer10 } }'
   }),
   invalid({ exception: 'Unexpected property "x"', strict: true, valueId: '{ x: 1 }' }),

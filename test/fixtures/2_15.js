@@ -1,19 +1,9 @@
 const tests = require('./tests.js')
 const tape = require('fresh-tape')
 
-tape('type: {"a":{"b":{"c":"?Number"}}}', t => {
-  const { valid, invalid } = tests(t, { a: { b: { c: '?Number' } } })
-  valid({
-    value: { a: { b: { c: 0 } } }
-  }),
-  valid({
-    value: { a: { b: { c: null } } }
-  }),
-  valid({
-    value: { a: { b: { c: 0, d: 0 } } }
-  }),
-  valid({ valueId: '{ a: { b: Buffer3 } }' }),
-  valid({ valueId: '{ a: { b: Buffer10 } }' })
+tape('type: {"a":{"b":"Number"}}', t => {
+  const { valid, invalid } = tests(t, { a: { b: 'Number' } })
+  valid({ value: { a: { b: 0 } } })
   invalid({ exception: 'Expected Object, got String ""', value: '' }),
   invalid({ exception: 'Expected Object, got String "foobar"', value: 'foobar' }),
   invalid({ exception: 'Expected Object, got Number 0', value: 0 }),
@@ -35,16 +25,19 @@ tape('type: {"a":{"b":{"c":"?Number"}}}', t => {
   invalid({ exception: 'Expected property "a" of type Object, got Number 0', value: { a: 0, b: 0 } }),
   invalid({ exception: 'Expected property "a" of type Object, got undefined', value: { b: 0 } }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Object, got Number 0',
-    value: { a: { b: 0 } }
-  }),
-  invalid({
-    exception: 'Expected property "a\\.b" of type Object, got null',
+    exception: 'Expected property "a\\.b" of type Number, got null',
     value: { a: { b: null } }
   }),
   invalid({
-    exception: 'Unexpected property "a\\.b\\.d"',
-    strict: true,
+    exception: 'Expected property "a\\.b" of type Number, got Object',
+    value: { a: { b: { c: 0 } } }
+  }),
+  invalid({
+    exception: 'Expected property "a\\.b" of type Number, got Object',
+    value: { a: { b: { c: null } } }
+  }),
+  invalid({
+    exception: 'Expected property "a\\.b" of type Number, got Object',
     value: { a: { b: { c: 0, d: 0 } } }
   }),
   invalid({
@@ -63,21 +56,19 @@ tape('type: {"a":{"b":{"c":"?Number"}}}', t => {
     valueId: '{ a: undefined }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Object, got undefined',
+    exception: 'Expected property "a\\.b" of type Number, got undefined',
     valueId: '{ a: Buffer3 }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Object, got undefined',
+    exception: 'Expected property "a\\.b" of type Number, got undefined',
     valueId: '{ a: Buffer10 }'
   }),
   invalid({
-    exception: 'Unexpected property "a\\.b\\.0"',
-    strict: true,
+    exception: 'Expected property "a\\.b" of type Number, got Buffer',
     valueId: '{ a: { b: Buffer3 } }'
   }),
   invalid({
-    exception: 'Unexpected property "a\\.b\\.0"',
-    strict: true,
+    exception: 'Expected property "a\\.b" of type Number, got Buffer',
     valueId: '{ a: { b: Buffer10 } }'
   }),
   invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: '{ x: 1 }' }),

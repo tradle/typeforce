@@ -14,22 +14,19 @@ tape('match variants', function (t) {
     t.equals(typeforce.match(() => true, 1), true, 'match is checked as well')
     t.equals(typeforce.match('String', 1), false, 'error is caught')
     t.match(typeforce.match.error.message, /Expected String, got Number 1/, 'error is kept in global')
-    t.match(typeforce.matchRaw.error.message, /Expected String, got Number 1/, 'matchRaw/match error are linked')
     typeforce.match.error = null
     t.equals(typeforce.match.error, null, 'error can be cleared')
-    t.equals(typeforce.matchRaw.error, null, 'matchRaw/match are linked')
     t.end()
   })
-  t.test('typeforce.matchRaw', function (t) {
-    t.equals(typeforce.matchRaw(() => false, true), false, 'non match should result in false')
-    t.equals(typeforce.matchRaw(() => true, 1), true, 'match is checked as well')
+  t.test('typeforce.compile().match', function (t) {
+    t.equals(typeforce.compile(() => false).match(true), false, 'non match should result in false')
+    t.equals(typeforce.compile(() => true).match(1), true, 'match is checked as well')
     const testError = new Error('test error ')
-    t.equals(typeforce.matchRaw(() => { throw testError }), false, 'error is caught')
-    t.equals(typeforce.matchRaw.error, testError, 'error is kept in global')
-    t.equals(typeforce.match.error, testError, 'matchRaw/match error are linked')
-    typeforce.matchRaw.error = null
-    t.equals(typeforce.matchRaw.error, null, 'error can be cleared')
-    t.equals(typeforce.match.error, null, 'matchRaw/match are linked')
+    const fn = () => { throw testError }
+    t.equals(typeforce.compile(fn).match(null), false, 'error is caught')
+    t.equals(fn.match.error, testError, 'error is kept in global')
+    fn.error = null
+    t.equals(fn.error, null, 'error can be cleared')
     t.end()
   })
 })
@@ -81,20 +78,14 @@ tape('async', function (t) {
   })
   t.test('fail (strict: null)', function (t) {
     typeforceAsync.assert(
-      Object.assign(
-        (value, strict) => {
-          t.equals(strict, null, 'other strict value is passed through')
-          return typeof value === 'string'
-        }, {
-          toJSON: function () {
-            return 'custom check'
-          }
-        }
-      ),
+      function customCheck (value, strict) {
+        t.equals(strict, null, 'other strict value is passed through')
+        return typeof value === 'string'
+      },
       1,
       null,
       (err, pass) => {
-        t.match(err.message, /Expected custom check, got Number 1/)
+        t.match(err.message, /Expected customCheck, got Number 1/)
         t.equals(pass, undefined)
         t.end()
       }

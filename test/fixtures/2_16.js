@@ -1,14 +1,19 @@
 const tests = require('./tests.js')
 const tape = require('fresh-tape')
 
-tape('type: {"a":{"b":{"c":"Number"}}}', t => {
-  const { valid, invalid } = tests(t, { a: { b: { c: 'Number' } } })
+tape('type: {"a":{"b":{"c":"?Number"}}}', t => {
+  const { valid, invalid } = tests(t, { a: { b: { c: '?Number' } } })
   valid({
     value: { a: { b: { c: 0 } } }
   }),
   valid({
+    value: { a: { b: { c: null } } }
+  }),
+  valid({
     value: { a: { b: { c: 0, d: 0 } } }
-  })
+  }),
+  valid({ valueId: '{ a: { b: Buffer3 } }' }),
+  valid({ valueId: '{ a: { b: Buffer10 } }' })
   invalid({ exception: 'Expected Object, got String ""', value: '' }),
   invalid({ exception: 'Expected Object, got String "foobar"', value: 'foobar' }),
   invalid({ exception: 'Expected Object, got Number 0', value: 0 }),
@@ -36,10 +41,6 @@ tape('type: {"a":{"b":{"c":"Number"}}}', t => {
   invalid({
     exception: 'Expected property "a\\.b" of type Object, got null',
     value: { a: { b: null } }
-  }),
-  invalid({
-    exception: 'Expected property "a\\.b\\.c" of type Number, got null',
-    value: { a: { b: { c: null } } }
   }),
   invalid({
     exception: 'Unexpected property "a\\.b\\.d"',
@@ -70,11 +71,13 @@ tape('type: {"a":{"b":{"c":"Number"}}}', t => {
     valueId: '{ a: Buffer10 }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b\\.c" of type Number, got undefined',
+    exception: 'Unexpected property "a\\.b\\.0"',
+    strict: true,
     valueId: '{ a: { b: Buffer3 } }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b\\.c" of type Number, got undefined',
+    exception: 'Unexpected property "a\\.b\\.0"',
+    strict: true,
     valueId: '{ a: { b: Buffer10 } }'
   }),
   invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: '{ x: 1 }' }),

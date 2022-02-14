@@ -1,5 +1,6 @@
 const ERRORS = require('./errors')
 const NATIVE = require('./native')
+const addAPI = ERRORS.addAPI
 
 // short-hand
 const tfJSON = ERRORS.tfJSON
@@ -12,8 +13,16 @@ const TYPES = {
   arrayOf: function arrayOf (type, options) {
     type = compile(type)
     options = options || {}
+    let str = '[' + tfJSON(type) + ']'
+    if (options.length !== undefined) {
+      str += '{' + options.length + '}'
+    } else if (options.minLength !== undefined || options.maxLength !== undefined) {
+      str += '{' +
+        (options.minLength === undefined ? 0 : options.minLength) + ',' +
+        (options.maxLength === undefined ? Infinity : options.maxLength) + '}'
+    }
 
-    function _arrayOf (array, strict) {
+    return addAPI(function _arrayOf (array, strict) {
       if (!NATIVE.Array(array)) return false
       if (options.minLength !== undefined && array.length < options.minLength) return false
       if (options.maxLength !== undefined && array.length > options.maxLength) return false
@@ -26,38 +35,22 @@ const TYPES = {
           throw tfSubError(e, i)
         }
       })
-    }
-    _arrayOf.toJSON = function () {
-      let str = '[' + tfJSON(type) + ']'
-      if (options.length !== undefined) {
-        str += '{' + options.length + '}'
-      } else if (options.minLength !== undefined || options.maxLength !== undefined) {
-        str += '{' +
-          (options.minLength === undefined ? 0 : options.minLength) + ',' +
-          (options.maxLength === undefined ? Infinity : options.maxLength) + '}'
-      }
-      return str
-    }
-
-    return _arrayOf
+    }, str)
   },
 
   maybe: function maybe (type) {
     type = compile(type)
 
-    function _maybe (value, strict) {
+    return addAPI(function _maybe (value, strict) {
       return NATIVE.Nil(value) || type(value, strict, maybe)
-    }
-    _maybe.toJSON = function () { return '?' + tfJSON(type) }
-
-    return _maybe
+    }, '?' + tfJSON(type))
   },
 
   map: function map (propertyType, propertyKeyType) {
     propertyType = compile(propertyType)
     if (propertyKeyType) propertyKeyType = compile(propertyKeyType)
 
-    function _map (value, strict) {
+    return addAPI(function _map (value, strict) {
       if (!NATIVE.Object(value)) return false
       if (NATIVE.Nil(value)) return false
 
@@ -79,15 +72,9 @@ const TYPES = {
       }
 
       return true
-    }
-
-    if (propertyKeyType) {
-      _map.toJSON = function () {
-        return '{' + tfJSON(propertyKeyType) + ': ' + tfJSON(propertyType) + '}'
-      }
-    } else {
-      _map.toJSON = function () { return '{' + tfJSON(propertyType) + '}' }
-    }
+    }, propertyKeyType ?
+      '{' + tfJSON(propertyKeyType) + ': ' + tfJSON(propertyType) + '}' :
+      '{' + tfJSON(propertyType) + '}')
 
     return _map
   },
@@ -99,7 +86,7 @@ const TYPES = {
       type[typePropertyName] = compile(uncompiled[typePropertyName])
     }
 
-    function _object (value, strict) {
+    return addAPI(function _object (value, strict) {
       if (!NATIVE.Object(value)) return false
       if (NATIVE.Nil(value)) return false
 
@@ -125,16 +112,13 @@ const TYPES = {
       }
 
       return true
-    }
-    _object.toJSON = function () { return tfJSON(type) }
-
-    return _object
+    }, tfJSON(type))
   },
 
   anyOf: function anyOf () {
     const types = [].slice.call(arguments).map(compile)
 
-    function _anyOf (value, strict) {
+    return addAPI(function _anyOf (value, strict) {
       return types.some(function (type) {
         try {
           return assert(type, value, strict)
@@ -142,16 +126,13 @@ const TYPES = {
           return false
         }
       })
-    }
-    _anyOf.toJSON = function () { return types.map(tfJSON).join('|') }
-
-    return _anyOf
+    }, types.map(tfJSON).join('|'))
   },
 
   allOf: function allOf () {
     const types = [].slice.call(arguments).map(compile)
 
-    function _allOf (value, strict) {
+    return addAPI(function _allOf (value, strict) {
       return types.every(function (type) {
         try {
           return assert(type, value, strict)
@@ -159,25 +140,19 @@ const TYPES = {
           return false
         }
       })
-    }
-    _allOf.toJSON = function () { return types.map(tfJSON).join(' & ') }
-
-    return _allOf
+    }, types.map(tfJSON).join(' & '))
   },
 
   quacksLike: function quacksLike (type) {
-    function _quacksLike (value) {
+    return addAPI(function _quacksLike (value) {
       return type === getValueTypeName(value)
-    }
-    _quacksLike.toJSON = function () { return type }
-
-    return _quacksLike
+    }, type)
   },
 
   tuple: function tuple () {
     const types = [].slice.call(arguments).map(compile)
 
-    function _tuple (values, strict) {
+    return addAPI(function _tuple (values, strict) {
       if (NATIVE.Nil(values)) return false
       if (NATIVE.Nil(values.length)) return false
       if (strict && (values.length !== types.length)) return false
@@ -189,19 +164,13 @@ const TYPES = {
           throw tfSubError(e, i)
         }
       })
-    }
-    _tuple.toJSON = function () { return '(' + types.map(tfJSON).join(', ') + ')' }
-
-    return _tuple
+    }, '(' + types.map(tfJSON).join(', ') + ')')
   },
 
   value: function value (expected) {
-    function _value (actual) {
+    return addAPI(function _value (actual) {
       return actual === expected
-    }
-    _value.toJSON = function () { return expected }
-
-    return _value
+    }, expected)
   }
 }
 
@@ -209,60 +178,43 @@ const TYPES = {
 TYPES.oneOf = TYPES.anyOf
 
 function compile (type) {
+  if (NATIVE.Validator(type)) {
+    return type
+  }
   if (NATIVE.String(type)) {
     if (type[0] === '?') return TYPES.maybe(type.slice(1))
 
     return NATIVE[type] || TYPES.quacksLike(type)
-  } else if (type && NATIVE.Object(type)) {
+  }
+  if (type && NATIVE.Object(type)) {
     if (NATIVE.Array(type)) {
       if (type.length !== 1) throw new TypeError('Expected compile() parameter of type Array of length 1')
       return TYPES.arrayOf(type[0])
     }
 
     return TYPES.object(type)
-  } else if (NATIVE.Function(type)) {
-    return type
+  }
+  if (NATIVE.Function(type)) {
+    return addAPI(type)
   }
 
   return TYPES.value(type)
 }
 
-function assertRaw (type, value, strict) {
-  if (type(value, strict)) return true
-
-  throw new TfTypeError(type, value)
-}
-
 function assert (type, value, strict) {
-  return assertRaw(NATIVE.Function(type) ? type : compile(type), value, strict)
-}
-
-function matchRaw (type, value, strict) {
-  try {
-    return assertRaw(type, value, strict)
-  } catch (e) {
-    matchRaw.error = e
-    return false
-  }
+  return compile(type).assert(value, strict)
 }
 
 function match (type, value, strict) {
-  return matchRaw(NATIVE.Function(type) ? type : compile(type), value, strict)
-}
-
-Object.defineProperty(match, 'error', {
-  get: function () {
-    return matchRaw.error
-  },
-  set: function (value) {
-    matchRaw.error = value
+  try {
+    return compile(type).assert(value, strict)
+  } catch (err) {
+    match.error = err
+    return false
   }
-})
-
+}
 const typeforce = {}
-typeforce.assertRaw = assertRaw
 typeforce.assert = assert
-typeforce.matchRaw = matchRaw
 typeforce.match = match
 // assign types to typeforce function
 for (const typeName in NATIVE) {

@@ -1,17 +1,15 @@
-const native = require('./native')
-
 function getTypeName (fn) {
   return fn.name || fn.toString().match(/function (.*?)\s*\(/)[1]
 }
 
 function getValueTypeName (value) {
-  return native.Nil(value) ? '' : getTypeName(value.constructor)
+  return value === null || value === undefined ? '' : getTypeName(value.constructor)
 }
 
 function getValue (value) {
-  if (native.Function(value)) return ''
-  if (native.String(value)) return JSON.stringify(value)
-  if (value && native.Object(value)) return ''
+  if (typeof value === 'function') return ''
+  if (typeof value === 'string') return JSON.stringify(value)
+  if (value !== null && typeof value === 'object') return ''
   return value
 }
 
@@ -22,9 +20,9 @@ function captureStackTrace (e, t) {
 }
 
 function tfJSON (type) {
-  if (native.Function(type)) return type.toJSON ? type.toJSON() : getTypeName(type)
-  if (native.Array(type)) return 'Array'
-  if (type && native.Object(type)) return 'Object'
+  if (typeof type === 'function') return type.toJSON ? type.toJSON() : getTypeName(type)
+  if (Array.isArray(type)) return 'Array'
+  if (type !== null && typeof type === 'object') return 'Object'
 
   return type !== undefined ? type : ''
 }
@@ -100,7 +98,32 @@ function tfSubError (e, property, label) {
   return e
 }
 
+function addAPI (fn, json) {
+  if (json === undefined) {
+    json = fn.name
+  }
+  const assert = function (value, strict) {
+    if (fn(value, strict)) return true
+
+    throw new TfTypeError(fn, value)
+  }
+  const match = function (value, strict) {
+    try {
+      return assert(value, strict)
+    } catch (e) {
+      match.error = e
+      return false
+    }
+  }
+  return Object.assign(fn, {
+    toJSON: function () { return json },
+    assert: assert,
+    match: match
+  })
+}
+
 module.exports = {
+  addAPI: addAPI,
   TfTypeError: TfTypeError,
   TfPropertyTypeError: TfPropertyTypeError,
   tfCustomError: tfCustomError,

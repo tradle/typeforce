@@ -26,23 +26,23 @@ tape('type: "{ a: { b: Buffer3 } }"', t => {
   invalid({ exception: 'Expected property "a" of type Object, got Number 0', value: { a: 0, b: 0 } }),
   invalid({ exception: 'Expected property "a" of type Object, got undefined', value: { b: 0 } }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got Number 0',
+    exception: 'Expected property "a\\.b" of type _Buffer, got Number 0',
     value: { a: { b: 0 } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got null',
+    exception: 'Expected property "a\\.b" of type _Buffer, got null',
     value: { a: { b: null } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got Object',
+    exception: 'Expected property "a\\.b" of type _Buffer, got Object',
     value: { a: { b: { c: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got Object',
+    exception: 'Expected property "a\\.b" of type _Buffer, got Object',
     value: { a: { b: { c: null } } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got Object',
+    exception: 'Expected property "a\\.b" of type _Buffer, got Object',
     value: { a: { b: { c: 0, d: 0 } } }
   }),
   invalid({
@@ -61,15 +61,15 @@ tape('type: "{ a: { b: Buffer3 } }"', t => {
     valueId: '{ a: undefined }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got undefined',
+    exception: 'Expected property "a\\.b" of type _Buffer, got undefined',
     valueId: '{ a: Buffer3 }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer, got undefined',
+    exception: 'Expected property "a\\.b" of type _Buffer, got undefined',
     valueId: '{ a: Buffer10 }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Buffer\\(Length\\: 3\\), got Buffer\\(Length\\: 10\\)',
+    exception: 'Expected property "a\\.b" of type _Buffer\\(Length\\: 3\\), got _Buffer\\(Length\\: 10\\)',
     valueId: '{ a: { b: Buffer10 } }'
   }),
   invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: '{ x: 1 }' }),

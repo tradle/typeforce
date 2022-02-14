@@ -1,90 +1,91 @@
 const tests = require('./tests.js')
 const tape = require('fresh-tape')
 
-tape('type: {"a":{"b":"Number"}}', t => {
-  const { valid, invalid } = tests(t, { a: { b: 'Number' } })
-  valid({ value: { a: { b: 0 } } })
+tape('type: {"a":"Number"}', t => {
+  const { valid, invalid } = tests(t, { a: 'Number' })
+  valid({ value: { a: 0 } }),
+  valid({ value: { a: 0, b: 0 } })
   invalid({ exception: 'Expected Object, got String ""', value: '' }),
   invalid({ exception: 'Expected Object, got String "foobar"', value: 'foobar' }),
   invalid({ exception: 'Expected Object, got Number 0', value: 0 }),
   invalid({ exception: 'Expected Object, got Number 1', value: 1 }),
   invalid({ exception: 'Expected Object, got Number 1\\.5', value: 1.5 }),
   invalid({ exception: 'Expected Object, got Number 10', value: 10 }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: [] }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: [ 0 ] }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: [ 'foobar' ] }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: [ { a: 0 } ] }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: [ null ] }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [] }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ 0 ] }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ 'foobar' ] }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ { a: 0 } ] }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ null ] }),
   invalid({ exception: 'Expected Object, got Boolean false', value: false }),
   invalid({ exception: 'Expected Object, got Boolean true', value: true }),
   invalid({ exception: 'Expected Object, got undefined', value: undefined }),
   invalid({ exception: 'Expected Object, got null', value: null }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: {} }),
-  invalid({ exception: 'Expected property "a" of type Object, got null', value: { a: null } }),
-  invalid({ exception: 'Expected property "a" of type Object, got Number 0', value: { a: 0 } }),
-  invalid({ exception: 'Expected property "a" of type Object, got Number 0', value: { a: 0, b: 0 } }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', value: { b: 0 } }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: {} }),
+  invalid({ exception: 'Expected property "a" of type Number, got null', value: { a: null } }),
+  invalid({ exception: 'Unexpected property "b"', strict: true, value: { a: 0, b: 0 } }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: { b: 0 } }),
+  invalid({ exception: 'Expected property "a" of type Number, got Object', value: { a: { b: 0 } } }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got null',
+    exception: 'Expected property "a" of type Number, got Object',
     value: { a: { b: null } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got Object',
+    exception: 'Expected property "a" of type Number, got Object',
     value: { a: { b: { c: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got Object',
+    exception: 'Expected property "a" of type Number, got Object',
     value: { a: { b: { c: null } } }
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got Object',
+    exception: 'Expected property "a" of type Number, got Object',
     value: { a: { b: { c: 0, d: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Object, got String "foo"',
+    exception: 'Expected property "a" of type Number, got String "foo"',
     value: { a: 'foo', b: 'bar' }
   }),
   invalid({
-    exception: 'Expected property "a" of type Object, got String "foo"',
+    exception: 'Expected property "a" of type Number, got String "foo"',
     value: { a: 'foo', b: { c: 'bar' } }
   }),
   invalid({ exception: 'Expected Object, got Function', valueId: 'function' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'emptyType' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'customType' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'emptyType' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'customType' }),
   invalid({
-    exception: 'Expected property "a" of type Object, got undefined',
+    exception: 'Expected property "a" of type Number, got undefined',
     valueId: '{ a: undefined }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got undefined',
+    exception: 'Expected property "a" of type Number, got Buffer',
     valueId: '{ a: Buffer3 }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got undefined',
+    exception: 'Expected property "a" of type Number, got Buffer',
     valueId: '{ a: Buffer10 }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got Buffer',
+    exception: 'Expected property "a" of type Number, got Object',
     valueId: '{ a: { b: Buffer3 } }'
   }),
   invalid({
-    exception: 'Expected property "a\\.b" of type Number, got Buffer',
+    exception: 'Expected property "a" of type Number, got Object',
     valueId: '{ a: { b: Buffer10 } }'
   }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: '{ x: 1 }' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: '{ y: 2 }' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: '{ x: 1 }' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: '{ y: 2 }' }),
   invalid({
-    exception: 'Expected property "a" of type Object, got undefined',
+    exception: 'Expected property "a" of type Number, got undefined',
     valueId: '{ x: 1, y: 2 }'
   }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Array5' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Array6' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Array7-N' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Array6-S' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Array7' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Buffer' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Buffer3' }),
-  invalid({ exception: 'Expected property "a" of type Object, got undefined', valueId: 'Buffer10' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array5' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array6' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array7-N' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array6-S' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array7' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Buffer' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Buffer3' }),
+  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Object, got String "boop"', valueId: 'String4' }),
   invalid({ exception: 'Expected Object, got Number 1', valueId: 'Finite' }),
   invalid({ exception: 'Expected Object, got Number Infinity', valueId: '+Infinity' }),

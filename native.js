@@ -1,4 +1,6 @@
+const addAPI = require('./errors').addAPI
 const types = {
+  Validator: function (value) { return typeof value === 'function' && 'assert' in value && 'match' in value && 'toJSON' in value },
   Array: function (value) { return value !== null && value !== undefined && value.constructor === Array },
   Boolean: function (value) { return typeof value === 'boolean' },
   Function: function (value) { return typeof value === 'function' },
@@ -12,9 +14,7 @@ const types = {
 types.Null = types.Nil
 
 for (const typeName in types) {
-  types[typeName].toJSON = function (t) {
-    return t
-  }.bind(null, typeName)
+  addAPI(types[typeName])
 }
 
 module.exports = types

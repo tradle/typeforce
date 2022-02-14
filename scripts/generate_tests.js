@@ -12,6 +12,7 @@ const TYPES2 = [
   'Buffer',
   'Function',
   'Nil',
+  'Null',
   'Number',
   'Object',
   'String',

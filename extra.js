@@ -1,5 +1,6 @@
 const NATIVE = require('./native')
 const ERRORS = require('./errors')
+const addAPI = ERRORS.addAPI
 
 function _Buffer (value) {
   return Buffer.isBuffer(value)
@@ -11,16 +12,12 @@ function Hex (value) {
 
 function _LengthN (type, length) {
   const name = type.toJSON()
-
-  function Length (value) {
+  return addAPI(function (value) {
     if (!type(value)) return false
     if (value.length === length) return true
 
     throw ERRORS.tfCustomError(name + '(Length: ' + length + ')', name + '(Length: ' + value.length + ')')
-  }
-  Length.toJSON = function () { return name }
-
-  return Length
+  }, name)
 }
 
 const _ArrayN = _LengthN.bind(null, NATIVE.Array)
@@ -30,13 +27,9 @@ const _StringN = _LengthN.bind(null, NATIVE.String)
 
 function Range (a, b, f) {
   f = f || NATIVE.Number
-  function _range (value, strict) {
+  return addAPI(function _range (value, strict) {
     return f(value, strict) && (value > a) && (value < b)
-  }
-  _range.toJSON = function () {
-    return `${f.toJSON()} between [${a}, ${b}]`
-  }
-  return _range
+  }, `${f.toJSON()} between [${a}, ${b}]`)
 }
 
 const INT53_MAX = Math.pow(2, 53) - 1
@@ -83,9 +76,7 @@ const types = {
 }
 
 for (const typeName in types) {
-  types[typeName].toJSON = function (t) {
-    return t
-  }.bind(null, typeName)
+  addAPI(types[typeName])
 }
 
 module.exports = types

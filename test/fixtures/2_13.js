@@ -1,91 +1,108 @@
 const tests = require('./tests.js')
 const tape = require('fresh-tape')
 
-tape('type: {"a":"Number"}', t => {
-  const { valid, invalid } = tests(t, { a: 'Number' })
+tape('type: {}', t => {
+  const { valid, invalid } = tests(t, {})
+  valid({ value: [] }),
+  valid({ value: [ 0 ] }),
+  valid({ value: [ 'foobar' ] }),
+  valid({ value: [ { a: 0 } ] }),
+  valid({ value: [ null ] }),
+  valid({ value: {} }),
+  valid({ value: { a: null } }),
   valid({ value: { a: 0 } }),
-  valid({ value: { a: 0, b: 0 } })
+  valid({ value: { a: 0, b: 0 } }),
+  valid({ value: { b: 0 } }),
+  valid({ value: { a: { b: 0 } } }),
+  valid({ value: { a: { b: null } } }),
+  valid({
+    value: { a: { b: { c: 0 } } }
+  }),
+  valid({
+    value: { a: { b: { c: null } } }
+  }),
+  valid({
+    value: { a: { b: { c: 0, d: 0 } } }
+  }),
+  valid({ value: { a: 'foo', b: 'bar' } }),
+  valid({ value: { a: 'foo', b: { c: 'bar' } } }),
+  valid({ valueId: 'emptyType' }),
+  valid({ valueId: 'customType' }),
+  valid({ valueId: '{ a: undefined }' }),
+  valid({ valueId: '{ a: Buffer3 }' }),
+  valid({ valueId: '{ a: Buffer10 }' }),
+  valid({ valueId: '{ a: { b: Buffer3 } }' }),
+  valid({ valueId: '{ a: { b: Buffer10 } }' }),
+  valid({ valueId: '{ x: 1 }' }),
+  valid({ valueId: '{ y: 2 }' }),
+  valid({ valueId: '{ x: 1, y: 2 }' }),
+  valid({ valueId: 'Array5' }),
+  valid({ valueId: 'Array6' }),
+  valid({ valueId: 'Array7-N' }),
+  valid({ valueId: 'Array6-S' }),
+  valid({ valueId: 'Array7' }),
+  valid({ valueId: 'Buffer' }),
+  valid({ valueId: 'Buffer3' }),
+  valid({ valueId: 'Buffer10' })
   invalid({ exception: 'Expected Object, got String ""', value: '' }),
   invalid({ exception: 'Expected Object, got String "foobar"', value: 'foobar' }),
   invalid({ exception: 'Expected Object, got Number 0', value: 0 }),
   invalid({ exception: 'Expected Object, got Number 1', value: 1 }),
   invalid({ exception: 'Expected Object, got Number 1\\.5', value: 1.5 }),
   invalid({ exception: 'Expected Object, got Number 10', value: 10 }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [] }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ 0 ] }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ 'foobar' ] }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ { a: 0 } ] }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: [ null ] }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, value: [ 0 ] }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, value: [ 'foobar' ] }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, value: [ { a: 0 } ] }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, value: [ null ] }),
   invalid({ exception: 'Expected Object, got Boolean false', value: false }),
   invalid({ exception: 'Expected Object, got Boolean true', value: true }),
   invalid({ exception: 'Expected Object, got undefined', value: undefined }),
   invalid({ exception: 'Expected Object, got null', value: null }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: {} }),
-  invalid({ exception: 'Expected property "a" of type Number, got null', value: { a: null } }),
-  invalid({ exception: 'Unexpected property "b"', strict: true, value: { a: 0, b: 0 } }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', value: { b: 0 } }),
-  invalid({ exception: 'Expected property "a" of type Number, got Object', value: { a: { b: 0 } } }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, value: { a: null } }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, value: { a: 0 } }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, value: { a: 0, b: 0 } }),
+  invalid({ exception: 'Unexpected property "b"', strict: true, value: { b: 0 } }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, value: { a: { b: 0 } } }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, value: { a: { b: null } } }),
   invalid({
-    exception: 'Expected property "a" of type Number, got Object',
-    value: { a: { b: null } }
-  }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got Object',
+    exception: 'Unexpected property "a"',
+    strict: true,
     value: { a: { b: { c: 0 } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number, got Object',
+    exception: 'Unexpected property "a"',
+    strict: true,
     value: { a: { b: { c: null } } }
   }),
   invalid({
-    exception: 'Expected property "a" of type Number, got Object',
+    exception: 'Unexpected property "a"',
+    strict: true,
     value: { a: { b: { c: 0, d: 0 } } }
   }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, value: { a: 'foo', b: 'bar' } }),
   invalid({
-    exception: 'Expected property "a" of type Number, got String "foo"',
-    value: { a: 'foo', b: 'bar' }
-  }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got String "foo"',
+    exception: 'Unexpected property "a"',
+    strict: true,
     value: { a: 'foo', b: { c: 'bar' } }
   }),
   invalid({ exception: 'Expected Object, got Function', valueId: 'function' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'emptyType' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'customType' }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got undefined',
-    valueId: '{ a: undefined }'
-  }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got Buffer',
-    valueId: '{ a: Buffer3 }'
-  }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got Buffer',
-    valueId: '{ a: Buffer10 }'
-  }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got Object',
-    valueId: '{ a: { b: Buffer3 } }'
-  }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got Object',
-    valueId: '{ a: { b: Buffer10 } }'
-  }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: '{ x: 1 }' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: '{ y: 2 }' }),
-  invalid({
-    exception: 'Expected property "a" of type Number, got undefined',
-    valueId: '{ x: 1, y: 2 }'
-  }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array5' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array6' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array7-N' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array6-S' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Array7' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Buffer' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Buffer3' }),
-  invalid({ exception: 'Expected property "a" of type Number, got undefined', valueId: 'Buffer10' }),
+  invalid({ exception: 'Unexpected property "x"', strict: true, valueId: 'customType' }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, valueId: '{ a: undefined }' }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, valueId: '{ a: Buffer3 }' }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, valueId: '{ a: Buffer10 }' }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, valueId: '{ a: { b: Buffer3 } }' }),
+  invalid({ exception: 'Unexpected property "a"', strict: true, valueId: '{ a: { b: Buffer10 } }' }),
+  invalid({ exception: 'Unexpected property "x"', strict: true, valueId: '{ x: 1 }' }),
+  invalid({ exception: 'Unexpected property "y"', strict: true, valueId: '{ y: 2 }' }),
+  invalid({ exception: 'Unexpected property "x"', strict: true, valueId: '{ x: 1, y: 2 }' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Array5' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Array6' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Array7-N' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Array6-S' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Array7' }),
+  invalid({ exception: 'Unexpected property "readBigUInt64LE"', strict: true, valueId: 'Buffer' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Buffer3' }),
+  invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Object, got String "boop"', valueId: 'String4' }),
   invalid({ exception: 'Expected Object, got Number 1', valueId: 'Finite' }),
   invalid({ exception: 'Expected Object, got Number Infinity', valueId: '+Infinity' }),
