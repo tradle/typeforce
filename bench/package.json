@@ -1,12 +1,9 @@
 {
-  "name": "bench",
-  "version": "1.0.0",
   "private": true,
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "license": "ISC",
   "devDependencies": {
     "typeforce": "*",
     "benchmark": "^2.1.4"

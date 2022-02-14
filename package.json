@@ -34,8 +34,9 @@
   },
   "scripts": {
     "coverage": "c8 -r html -r text --check-coverage --branches 100 --functions 100 node test/index.js",
-    "test": "npm run standard && npm run unit",
-    "standard": "standard",
+    "bench": "cd bench; npm i --no-audit --no-donate; npm start",
+    "test": "npm run lint && npm run unit",
+    "lint": "standard",
     "unit": "node test/*.js"
   },
   "dependencies": {},
