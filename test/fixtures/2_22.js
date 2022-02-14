@@ -1,5 +1,5 @@
 const tests = require('./tests.js')
-const tape = require('tape')
+const tape = require('fresh-tape')
 
 tape('type: 0', t => {
   const { valid, invalid } = tests(t, 0)
