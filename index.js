@@ -3,17 +3,18 @@ const NATIVE = require('./native')
 const addAPI = ERRORS.addAPI
 
 // short-hand
-const tfJSON = ERRORS.tfJSON
 const TfTypeError = ERRORS.TfTypeError
 const TfPropertyTypeError = ERRORS.TfPropertyTypeError
 const tfSubError = ERRORS.tfSubError
 const getValueTypeName = ERRORS.getValueTypeName
 
+const toJSON = val => val.toJSON()
+
 const TYPES = {
   arrayOf: function arrayOf (type, options) {
     type = compile(type)
     options = options || {}
-    let str = '[' + tfJSON(type) + ']'
+    let str = '[' + type.toJSON() + ']'
     if (options.length !== undefined) {
       str += '{' + options.length + '}'
     } else if (options.minLength !== undefined || options.maxLength !== undefined) {
@@ -43,7 +44,7 @@ const TYPES = {
 
     return addAPI(function _maybe (value, strict) {
       return NATIVE.Nil(value) || type(value, strict, maybe)
-    }, '?' + tfJSON(type))
+    }, '?' + type.toJSON())
   },
 
   map: function map (propertyType, propertyKeyType) {
@@ -73,8 +74,8 @@ const TYPES = {
 
       return true
     }, propertyKeyType ?
-      '{' + tfJSON(propertyKeyType) + ': ' + tfJSON(propertyType) + '}' :
-      '{' + tfJSON(propertyType) + '}')
+      '{' + propertyKeyType.toJSON() + ': ' + propertyType.toJSON() + '}' :
+      '{' + propertyType.toJSON() + '}')
   },
 
   object: function object (uncompiled) {
@@ -110,7 +111,7 @@ const TYPES = {
       }
 
       return true
-    }, tfJSON(type))
+    }, 'Object')
   },
 
   anyOf: function anyOf () {
@@ -124,7 +125,7 @@ const TYPES = {
           return false
         }
       })
-    }, types.map(tfJSON).join('|'))
+    }, types.map(toJSON).join('|'))
   },
 
   allOf: function allOf () {
@@ -138,7 +139,7 @@ const TYPES = {
           return false
         }
       })
-    }, types.map(tfJSON).join(' & '))
+    }, types.map(toJSON).join(' & '))
   },
 
   quacksLike: function quacksLike (type) {
@@ -162,7 +163,7 @@ const TYPES = {
           throw tfSubError(e, i)
         }
       })
-    }, '(' + types.map(tfJSON).join(', ') + ')')
+    }, '(' + types.map(toJSON).join(', ') + ')')
   },
 
   value: function value (expected) {
