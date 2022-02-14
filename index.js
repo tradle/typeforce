@@ -15,7 +15,6 @@ const TYPES = {
 
     function _arrayOf (array, strict) {
       if (!NATIVE.Array(array)) return false
-      if (NATIVE.Nil(array)) return false
       if (options.minLength !== undefined && array.length < options.minLength) return false
       if (options.maxLength !== undefined && array.length > options.maxLength) return false
       if (options.length !== undefined && array.length !== options.length) return false
