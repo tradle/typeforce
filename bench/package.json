@@ -1,15 +1,14 @@
 {
   "name": "bench",
   "version": "1.0.0",
-  "description": "",
-  "main": "run.js",
+  "private": true,
+  "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "benchmark": "^1.0.0",
-    "typeforce": "1.11.1"
+  "devDependencies": {
+    "typeforce": "*",
+    "benchmark": "^2.1.4"
   }
 }

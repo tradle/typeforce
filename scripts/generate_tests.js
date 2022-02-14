@@ -151,21 +151,31 @@ ALLTYPES.forEach(({ type, id }) => {
   ALLVALUES.forEach(value => addFixture(type, value))
   VALUESX.forEach(value => addFixture(type, value))
   const file = path.join(__dirname, '..', 'test', 'fixtures', `${id}.js`)
-  fs.writeFileSync(file, `const tests = require('./tests.js')
-const tape = require('fresh-tape')${
+  fs.writeFileSync(file, `const fixture = require('./fixture.js')${
   TYPES[type] ? '\nconst TYPES = require(\'../types\')' : ''
 }
 
-tape('type: ${JSON.stringify(type)}', t => {
-  const { ${
-    ['valid', 'invalid'].filter(entry => fixtures[entry].length > 0).join(', ')
-  } } = tests(t, ${TYPES[type] ? `TYPES['${type}']` : inspect(type)})${
-    fixtures.valid.map(valid => `\n  valid(${inspect(valid)})`)}${
-    fixtures.invalid.map(invalid => `\n  invalid(${inspect(invalid)})`)}
-  t.end()
-})
+const fix = fixture('${JSON.stringify(type)}', ${TYPES[type] ? `TYPES['${type}']` : inspect(type)}, ({ ${['valid', 'invalid'].filter(entry => fixtures[entry].length > 0).join(', ')} }) => {
+${
+  fixtures.valid.map(valid => `  valid(${inspect(valid)})\n`).join('')}${
+  fixtures.invalid.map(invalid => `  invalid(${inspect(invalid)})\n`).join('')
+}})
+
+if (require.main === module) {
+  fix(require('../..').compile, require('fresh-tape'))
+} else {
+  module.exports = fix
+}
 `)
 })
 
-fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `${ALLTYPES.map(({ id }) => `require('./fixtures/${id}.js')`).join('\n')}
+fs.writeFileSync(path.join(__dirname, '..', 'test', 'fixtures.js'), `const fixtures = (compile, run) => [
+  ${ALLTYPES.map(({ id }) => `require('./fixtures/${id}.js')`).join(',\n  ')}
+].forEach(fixture => fixture(compile, run))
+
+if (require.main === module) {
+  fixtures(require('..').compile, require('fresh-tape'))
+} else {
+  module.exports = fixtures
+}
 `)

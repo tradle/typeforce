@@ -1,74 +1,82 @@
-require('./fixtures/2_0.js')
-require('./fixtures/2_1.js')
-require('./fixtures/2_2.js')
-require('./fixtures/2_3.js')
-require('./fixtures/2_4.js')
-require('./fixtures/2_5.js')
-require('./fixtures/2_6.js')
-require('./fixtures/2_7.js')
-require('./fixtures/2_8.js')
-require('./fixtures/2_9.js')
-require('./fixtures/2_10.js')
-require('./fixtures/2_11.js')
-require('./fixtures/2_12.js')
-require('./fixtures/2_13.js')
-require('./fixtures/2_14.js')
-require('./fixtures/2_15.js')
-require('./fixtures/2_16.js')
-require('./fixtures/2_17.js')
-require('./fixtures/2_18.js')
-require('./fixtures/2_19.js')
-require('./fixtures/2_20.js')
-require('./fixtures/2_21.js')
-require('./fixtures/2_22.js')
-require('./fixtures/2_23.js')
-require('./fixtures/1_0.js')
-require('./fixtures/1_1.js')
-require('./fixtures/1_2.js')
-require('./fixtures/1_3.js')
-require('./fixtures/1_4.js')
-require('./fixtures/1_5.js')
-require('./fixtures/1_6.js')
-require('./fixtures/1_7.js')
-require('./fixtures/1_8.js')
-require('./fixtures/1_9.js')
-require('./fixtures/1_10.js')
-require('./fixtures/1_11.js')
-require('./fixtures/1_12.js')
-require('./fixtures/1_13.js')
-require('./fixtures/1_14.js')
-require('./fixtures/1_15.js')
-require('./fixtures/1_16.js')
-require('./fixtures/1_17.js')
-require('./fixtures/1_18.js')
-require('./fixtures/1_19.js')
-require('./fixtures/1_20.js')
-require('./fixtures/1_21.js')
-require('./fixtures/1_22.js')
-require('./fixtures/1_23.js')
-require('./fixtures/1_24.js')
-require('./fixtures/1_25.js')
-require('./fixtures/1_26.js')
-require('./fixtures/1_27.js')
-require('./fixtures/1_28.js')
-require('./fixtures/1_29.js')
-require('./fixtures/1_30.js')
-require('./fixtures/1_31.js')
-require('./fixtures/1_32.js')
-require('./fixtures/1_33.js')
-require('./fixtures/1_34.js')
-require('./fixtures/1_35.js')
-require('./fixtures/1_36.js')
-require('./fixtures/1_37.js')
-require('./fixtures/1_38.js')
-require('./fixtures/1_39.js')
-require('./fixtures/1_40.js')
-require('./fixtures/1_41.js')
-require('./fixtures/1_42.js')
-require('./fixtures/1_43.js')
-require('./fixtures/1_44.js')
-require('./fixtures/1_45.js')
-require('./fixtures/1_46.js')
-require('./fixtures/1_47.js')
-require('./fixtures/1_48.js')
-require('./fixtures/1_49.js')
+const fixtures = (compile, run) => [
+  require('./fixtures/2_0.js'),
+  require('./fixtures/2_1.js'),
+  require('./fixtures/2_2.js'),
+  require('./fixtures/2_3.js'),
+  require('./fixtures/2_4.js'),
+  require('./fixtures/2_5.js'),
+  require('./fixtures/2_6.js'),
+  require('./fixtures/2_7.js'),
+  require('./fixtures/2_8.js'),
+  require('./fixtures/2_9.js'),
+  require('./fixtures/2_10.js'),
+  require('./fixtures/2_11.js'),
+  require('./fixtures/2_12.js'),
+  require('./fixtures/2_13.js'),
+  require('./fixtures/2_14.js'),
+  require('./fixtures/2_15.js'),
+  require('./fixtures/2_16.js'),
+  require('./fixtures/2_17.js'),
+  require('./fixtures/2_18.js'),
+  require('./fixtures/2_19.js'),
+  require('./fixtures/2_20.js'),
+  require('./fixtures/2_21.js'),
+  require('./fixtures/2_22.js'),
+  require('./fixtures/2_23.js'),
+  require('./fixtures/1_0.js'),
+  require('./fixtures/1_1.js'),
+  require('./fixtures/1_2.js'),
+  require('./fixtures/1_3.js'),
+  require('./fixtures/1_4.js'),
+  require('./fixtures/1_5.js'),
+  require('./fixtures/1_6.js'),
+  require('./fixtures/1_7.js'),
+  require('./fixtures/1_8.js'),
+  require('./fixtures/1_9.js'),
+  require('./fixtures/1_10.js'),
+  require('./fixtures/1_11.js'),
+  require('./fixtures/1_12.js'),
+  require('./fixtures/1_13.js'),
+  require('./fixtures/1_14.js'),
+  require('./fixtures/1_15.js'),
+  require('./fixtures/1_16.js'),
+  require('./fixtures/1_17.js'),
+  require('./fixtures/1_18.js'),
+  require('./fixtures/1_19.js'),
+  require('./fixtures/1_20.js'),
+  require('./fixtures/1_21.js'),
+  require('./fixtures/1_22.js'),
+  require('./fixtures/1_23.js'),
+  require('./fixtures/1_24.js'),
+  require('./fixtures/1_25.js'),
+  require('./fixtures/1_26.js'),
+  require('./fixtures/1_27.js'),
+  require('./fixtures/1_28.js'),
+  require('./fixtures/1_29.js'),
+  require('./fixtures/1_30.js'),
+  require('./fixtures/1_31.js'),
+  require('./fixtures/1_32.js'),
+  require('./fixtures/1_33.js'),
+  require('./fixtures/1_34.js'),
+  require('./fixtures/1_35.js'),
+  require('./fixtures/1_36.js'),
+  require('./fixtures/1_37.js'),
+  require('./fixtures/1_38.js'),
+  require('./fixtures/1_39.js'),
+  require('./fixtures/1_40.js'),
+  require('./fixtures/1_41.js'),
+  require('./fixtures/1_42.js'),
+  require('./fixtures/1_43.js'),
+  require('./fixtures/1_44.js'),
+  require('./fixtures/1_45.js'),
+  require('./fixtures/1_46.js'),
+  require('./fixtures/1_47.js'),
+  require('./fixtures/1_48.js'),
+  require('./fixtures/1_49.js')
+].forEach(fixture => fixture(compile, run))
+
+if (require.main === module) {
+  fixtures(require('..').compile, require('fresh-tape'))
+} else {
+  module.exports = fixtures
+}

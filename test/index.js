@@ -3,7 +3,7 @@ const typeforce = require('../')
 const typeforceAsync = require('../async')
 
 // Load fixtures test!
-require('./fixtures')
+require('./fixtures')(typeforce.compile, tape)
 
 const err = new typeforce.TfTypeError('mytype')
 function failType () { throw err }

@@ -2,62 +2,74 @@ const assert = require('assert')
 const benchmark = require('benchmark')
 const local = require('../')
 const npm = require('typeforce')
-const TYPES = require('../test/types')
-const VALUES = require('../test/values')
-const tests = require('../test/fixtures')
-const fixtures = tests.valid.concat(tests.invalid)
+const fixtures = require('../test/fixtures')
 
-fixtures.forEach(function (f) {
-  const type = TYPES[f.typeId] || f.type
-  const value = VALUES[f.valueId] || f.value
-  const ctype = local.compile(type)
-
-  if (f.exception) {
-    assert.throws(function () { local(type, value, f.strict) }, new RegExp(f.exception))
-    // assert.throws(function () { npm(type, value, f.strict) }, new RegExp(f.exception))
-    assert.throws(function () { local(ctype, value, f.strict) }, new RegExp(f.exception))
-    // assert.throws(function () { npm(ctype, value, f.strict) }, new RegExp(f.exception))
-  } else {
-    local(type, value, f.strict)
-    npm(type, value, f.strict)
-    local(ctype, value, f.strict)
-    npm(ctype, value, f.strict)
+const legacyCompile = 
+  typeof npm !== 'function' ? npm.compile : function (type) {
+    const compiled = npm.compile(type)
+    return {
+      assert (value, strict) {
+        return npm(compiled, value, strict)
+      }
+    }
   }
+
+const hollowRun = {
+  equal(a, b) {
+    assert.equal(a, b)
+  },
+  throws(fn, msg) {
+    assert.throws(fn, msg)
+  },
+  end () {}
+}
+
+const incompatible = new Set()
+fixtures(legacyCompile, function warmupNPM (name, handler) {
+  try {
+    handler(hollowRun)
+  } catch (err) {
+    incompatible.add(name)
+  }
+})
+fixtures(local.compile, function warmupLocal (_name, handler) {
+  handler(hollowRun)
+})
+if (incompatible.size > 0) {
+  console.warn(`[WARNING] Following fixtures can not be run against old version: \n  - ${Array.from(incompatible).join('\n  -')}`)
+}
+
+const testsByName = {}
+const suiteTest = (prefix, compile) => fixtures(compile, (name, handler) => {
+  if (incompatible.has(name)) return
+  let testByName = testsByName[name]
+  if (!testByName) {
+    testByName = []
+    testsByName[name] = testByName
+  }
+  testByName.push(() => suite.add(`${prefix}#${name}`, () => {
+    handler(hollowRun)
+  }))
 })
 
 // benchmark.options.minTime = 1
-fixtures.forEach(function (f) {
-  const suite = new benchmark.Suite()
-  const tdescription = JSON.stringify(f.type)
-  const type = TYPES[f.typeId] || f.type
-  const value = VALUES[f.valueId] || f.value
-  const ctype = local.compile(type)
+const suite = new benchmark.Suite()
+suiteTest('local', local.compile)
+suiteTest('npm', legacyCompile)
 
-  if (f.exception) {
-    suite.add('local(e)#' + tdescription, function () { try { local(type, value, f.strict) } catch (e) {} })
-    suite.add('  npm(e)#' + tdescription, function () { try { npm(type, value, f.strict) } catch (e) {} })
-    suite.add('local(c, e)#' + tdescription, function () { try { local(ctype, value, f.strict) } catch (e) {} })
-    suite.add('  npm(c, e)#' + tdescription, function () { try { npm(ctype, value, f.strict) } catch (e) {} })
-  } else {
-    suite.add('local#' + tdescription, function () { local(type, value, f.strict) })
-    suite.add('  npm#' + tdescription, function () { npm(type, value, f.strict) })
-    suite.add('local(c)#' + tdescription, function () { local(ctype, value, f.strict) })
-    suite.add('  npm(c)#' + tdescription, function () { npm(ctype, value, f.strict) })
+for (const tests of Object.values(testsByName)) {
+  for (const addToSuite of tests) {
+    addToSuite()
   }
+}
 
-  // after each cycle
-  suite.on('cycle', function (event) {
-    console.log('*', String(event.target))
-  })
-
-  // other handling
-  suite.on('complete', function () {
-    console.log('\n> Fastest is' + (' ' + this.filter('fastest').pluck('name').join(' | ')).replace(/\s+/, ' ') + '\n')
-  })
-
-  suite.on('error', function (event) {
-    throw event.target.error
-  })
-
-  suite.run()
+// after each cycle
+suite.on('cycle', function (event) {
+  console.log('*', String(event.target))
 })
+
+suite.on('error', function (event) {
+  throw event.target.error
+})
+
+suite.run()
