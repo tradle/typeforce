@@ -4,21 +4,23 @@ const local = require('../')
 const npm = require('typeforce')
 const fixtures = require('../test/fixtures')
 
-const legacyCompile = 
-  typeof npm !== 'function' ? npm.compile : function (type) {
-    const compiled = npm.compile(type)
-    return {
-      assert (value, strict) {
-        return npm(compiled, value, strict)
+const legacyCompile =
+  typeof npm !== 'function'
+    ? npm.compile
+    : function (type) {
+      const compiled = npm.compile(type)
+      return {
+        assert (value, strict) {
+          return npm(compiled, value, strict)
+        }
       }
     }
-  }
 
 const hollowRun = {
-  equal(a, b) {
+  equal (a, b) {
     assert.equal(a, b)
   },
-  throws(fn, msg) {
+  throws (fn, msg) {
     assert.throws(fn, msg)
   },
   end () {}
