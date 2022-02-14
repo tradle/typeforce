@@ -56,6 +56,9 @@ tape('type: "Object"', t => {
   invalid({ exception: 'Expected Object, got undefined', value: undefined }),
   invalid({ exception: 'Expected Object, got Function', valueId: 'function' }),
   invalid({ exception: 'Expected Object, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected Object, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected Object, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected Object, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected Object, got String "fff"', value: 'fff' }),
   invalid({ exception: 'Expected Object, got String "cafe1122deadbeef"', value: 'cafe1122deadbeef' }),
   invalid({

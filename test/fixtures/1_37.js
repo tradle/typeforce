@@ -61,6 +61,9 @@ tape('type: "Hex64"', t => {
   invalid({ exception: 'Expected Hex, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected Hex, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Hex, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected Hex, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected Hex, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected Hex, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected Hex, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected Hex\\(Length\\: 64\\), got Hex\\(Length\\: 16\\)',

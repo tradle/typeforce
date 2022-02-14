@@ -99,6 +99,9 @@ tape('type: "(Number|String)"', t => {
     strict: true,
     valueId: 'String4'
   }),
+  invalid({ exception: 'Expected \\(Number|String\\), got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\(Number|String\\), got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected \\(Number|String\\), got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected \\(Number|String\\), got String "fff"', strict: true, value: 'fff' }),
   invalid({
     exception: 'Expected \\(Number|String\\), got String "cafe1122deadbeef"',

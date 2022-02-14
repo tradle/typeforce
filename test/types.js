@@ -54,5 +54,6 @@ module.exports = {
   UInt8: typeforce.UInt8,
   UInt16: typeforce.UInt16,
   UInt32: typeforce.UInt32,
-  UInt53: typeforce.UInt53
+  UInt53: typeforce.UInt53,
+  Finite: typeforce.Finite
 }

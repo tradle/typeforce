@@ -60,6 +60,9 @@ tape('type: ">CustomType"', t => {
   invalid({ exception: 'Expected CustomType, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected CustomType, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected CustomType, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected CustomType, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected CustomType, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected CustomType, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected CustomType, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected CustomType, got String "cafe1122deadbeef"',

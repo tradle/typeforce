@@ -100,6 +100,9 @@ tape('type: "{ a: ?{ b: ?{ c: Number } } }"', t => {
   invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Buffer3' }),
   invalid({ exception: 'Unexpected property "0"', strict: true, valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Object, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected Object, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected Object, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected Object, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected Object, got String "fff"', value: 'fff' }),
   invalid({ exception: 'Expected Object, got String "cafe1122deadbeef"', value: 'cafe1122deadbeef' }),
   invalid({

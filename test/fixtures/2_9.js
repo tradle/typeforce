@@ -65,6 +65,9 @@ tape('type: ["?Number"]', t => {
   invalid({ exception: 'Expected \\[\\?Number\\], got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected \\[\\?Number\\], got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected \\[\\?Number\\], got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected \\[\\?Number\\], got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\[\\?Number\\], got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected \\[\\?Number\\], got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected \\[\\?Number\\], got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected \\[\\?Number\\], got String "cafe1122deadbeef"',

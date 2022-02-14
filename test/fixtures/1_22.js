@@ -117,6 +117,12 @@ tape('type: "{ Letter: Number }"', t => {
     valueId: 'Buffer10'
   }),
   invalid({ exception: 'Expected \\{Letter\\: Number\\}, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected \\{Letter\\: Number\\}, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\{Letter\\: Number\\}, got Number Infinity', valueId: '+Infinity' }),
+  invalid({
+    exception: 'Expected \\{Letter\\: Number\\}, got Number -Infinity',
+    valueId: '-Infinity'
+  }),
   invalid({ exception: 'Expected \\{Letter\\: Number\\}, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected \\{Letter\\: Number\\}, got String "cafe1122deadbeef"',

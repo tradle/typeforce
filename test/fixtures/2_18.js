@@ -59,6 +59,9 @@ tape('type: undefined', t => {
   invalid({ exception: 'Expected undefined, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected undefined, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected undefined, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected undefined, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected undefined, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected undefined, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected undefined, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected undefined, got String "cafe1122deadbeef"',

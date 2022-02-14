@@ -60,6 +60,9 @@ tape('type: "?Unmatchable"', t => {
   invalid({ exception: 'Expected \\?Unmatchable, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected \\?Unmatchable, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected \\?Unmatchable, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected \\?Unmatchable, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\?Unmatchable, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected \\?Unmatchable, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected \\?Unmatchable, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected \\?Unmatchable, got String "cafe1122deadbeef"',

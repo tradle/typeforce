@@ -59,6 +59,9 @@ tape('type: "Nil"', t => {
   invalid({ exception: 'Expected Null, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected Null, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Null, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected Null, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected Null, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected Null, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected Null, got String "fff"', value: 'fff' }),
   invalid({ exception: 'Expected Null, got String "cafe1122deadbeef"', value: 'cafe1122deadbeef' }),
   invalid({

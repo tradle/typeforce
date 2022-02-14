@@ -72,6 +72,9 @@ tape('type: "(Boolean, Number)"', t => {
   invalid({ exception: 'Expected property "0" of type Boolean, got Number 255', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected property "0" of type Boolean, got Number 255', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected property "0" of type Boolean, got String "b"', valueId: 'String4' }),
+  invalid({ exception: 'Expected \\(Boolean, Number\\), got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\(Boolean, Number\\), got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected \\(Boolean, Number\\), got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected property "0" of type Boolean, got String "f"', value: 'fff' }),
   invalid({
     exception: 'Expected property "0" of type Boolean, got String "c"',

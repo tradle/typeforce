@@ -7,6 +7,7 @@ tape('type: "UInt32"', t => {
   valid({ value: 0 }),
   valid({ value: 1 }),
   valid({ value: 10 }),
+  valid({ valueId: 'Finite' }),
   valid({ value: 127 }),
   valid({ value: 128 }),
   valid({ value: 255 }),
@@ -68,6 +69,8 @@ tape('type: "UInt32"', t => {
   invalid({ exception: 'Expected UInt32, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected UInt32, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected UInt32, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected UInt32, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected UInt32, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected UInt32, got String "fff"', value: 'fff' }),
   invalid({ exception: 'Expected UInt32, got String "cafe1122deadbeef"', value: 'cafe1122deadbeef' }),
   invalid({

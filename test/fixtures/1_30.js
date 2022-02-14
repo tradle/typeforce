@@ -72,6 +72,9 @@ tape('type: "Array<=6(Number)"', t => {
   invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected \\[Number\\]\\{0,6\\}, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected \\[Number\\]\\{0,6\\}, got String "cafe1122deadbeef"',

@@ -21,5 +21,8 @@ module.exports = {
   Buffer: Buffer.alloc(0),
   Buffer3: buffer3,
   Buffer10: buffer10,
-  String4: 'boop'
+  String4: 'boop',
+  'Finite': 1,
+  '+Infinity': +Infinity,
+  '-Infinity': -Infinity
 }

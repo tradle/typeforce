@@ -87,6 +87,9 @@ tape('type: "{ String }"', t => {
   invalid({ exception: 'Expected property "0" of type String, got Number 255', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected property "0" of type String, got Number 255', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected \\{String\\}, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected \\{String\\}, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected \\{String\\}, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected \\{String\\}, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected \\{String\\}, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected \\{String\\}, got String "cafe1122deadbeef"',

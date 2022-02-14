@@ -78,6 +78,9 @@ tape('type: "Array7"', t => {
   invalid({ exception: 'Expected Array, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected Array, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Array, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected Array, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected Array, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected Array, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected Array, got String "fff"', value: 'fff' }),
   invalid({ exception: 'Expected Array, got String "cafe1122deadbeef"', value: 'cafe1122deadbeef' }),
   invalid({

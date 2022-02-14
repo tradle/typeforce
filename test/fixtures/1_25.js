@@ -60,6 +60,9 @@ tape('type: "{ a: { b: Buffer } }"', t => {
   invalid({ exception: 'Expected Object & Object, got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected Object & Object, got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Object & Object, got String "boop"', valueId: 'String4' }),
+  invalid({ exception: 'Expected Object & Object, got Number 1', valueId: 'Finite' }),
+  invalid({ exception: 'Expected Object & Object, got Number Infinity', valueId: '+Infinity' }),
+  invalid({ exception: 'Expected Object & Object, got Number -Infinity', valueId: '-Infinity' }),
   invalid({ exception: 'Expected Object & Object, got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected Object & Object, got String "cafe1122deadbeef"',

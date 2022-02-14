@@ -5,7 +5,8 @@ const TYPES = require('../types')
 tape('type: "Int8Range0-100"', t => {
   const { valid, invalid } = tests(t, TYPES['Int8Range0-100'])
   valid({ value: 1 }),
-  valid({ value: 10 })
+  valid({ value: 10 }),
+  valid({ valueId: 'Finite' })
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got String ""', value: '' }),
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got String "foobar"', value: 'foobar' }),
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got Number 0', value: 0 }),
@@ -75,6 +76,14 @@ tape('type: "Int8Range0-100"', t => {
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got Buffer', valueId: 'Buffer3' }),
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got Buffer', valueId: 'Buffer10' }),
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got String "boop"', valueId: 'String4' }),
+  invalid({
+    exception: 'Expected Int8 between \\[0, 100\\], got Number Infinity',
+    valueId: '+Infinity'
+  }),
+  invalid({
+    exception: 'Expected Int8 between \\[0, 100\\], got Number -Infinity',
+    valueId: '-Infinity'
+  }),
   invalid({ exception: 'Expected Int8 between \\[0, 100\\], got String "fff"', value: 'fff' }),
   invalid({
     exception: 'Expected Int8 between \\[0, 100\\], got String "cafe1122deadbeef"',
