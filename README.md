@@ -71,6 +71,13 @@ const type = {
 }
 
 const fastType = typeforce.compile(type)
+fastType.assert({
+  foo: 1
+})
+fastType.match({
+  foo: 2,
+  bar: 'world'
+})
 // fastType => typeforce.object({
 //   foo: typeforce.Number,
 //   bar: typeforce.maybe(typeforce.String)
