@@ -12,7 +12,7 @@ tape('match variants', function (t) {
   t.test('typeforce.match', function (t) {
     t.equals(typeforce.match(() => false, true), false, 'non match should result in false')
     t.equals(typeforce.match(() => true, 1), true, 'match is checked as well')
-    t.equals(typeforce.match(typeforce.String, 1), false, 'error is caught')
+    t.equals(typeforce.match('String', 1), false, 'error is caught')
     t.match(typeforce.match.error.message, /Expected String, got Number 1/, 'error is kept in global')
     t.match(typeforce.matchRaw.error.message, /Expected String, got Number 1/, 'matchRaw/match error are linked')
     typeforce.match.error = null
