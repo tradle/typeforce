@@ -1,5 +1,7 @@
-# typeforce
-[![Version](https://img.shields.io/npm/v/typeforce.svg)](https://www.npmjs.org/package/typeforce)
+# @tradle/typeforce
+[![Version](https://img.shields.io/npm/v/@tradle/typeforce.svg)](https://www.npmjs.org/package/@tradle/typeforce)
+
+> This is a fork of [typeforce](https://github.com/dcousens/typeforce) that is based on typescript and comes with strong types.
 
 Another biased type checking solution for Javascript.
 
@@ -8,7 +10,7 @@ Exception messages may change between patch versions,  as often the patch will c
 ## Examples
 
 ```javascript
-const typeforce = require('typeforce')
+const typeforce = require('@tradle/typeforce')
 const { assert } = typeforce
 
 // supported primitives 'Array', 'Boolean', 'Buffer', 'Number', 'Object', 'String'
@@ -128,7 +130,7 @@ assert(typeforce.quacksLike('Foo'), new (function Foo() {}))
 
 **Pro**tips (no throw)
 ```javascript
-const typeforce = require('typeforce')
+const typeforce = require('@tradle/typeforce')
 const { match } = typeforce
 const value = 'foobar'
 

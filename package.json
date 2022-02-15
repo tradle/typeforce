@@ -1,7 +1,7 @@
 {
-  "name": "typeforce",
-  "version": "1.18.0",
-  "description": "Another biased type checking solution for Javascript",
+  "name": "@tradle/typeforce",
+  "version": "2.0.0",
+  "description": "Another typescript-based, biased type checking solution for Javascript",
   "keywords": [
     "typeforce",
     "types",
@@ -10,9 +10,9 @@
     "exceptions",
     "force"
   ],
-  "homepage": "https://github.com/dcousens/typeforce",
+  "homepage": "https://github.com/tradle/typeforce",
   "bugs": {
-    "url": "https://github.com/dcousens/typeforce/issues"
+    "url": "https://github.com/tradle/typeforce/issues"
   },
   "license": "MIT",
   "author": "Daniel Cousens",
