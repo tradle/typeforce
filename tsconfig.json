@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "strict": true,
+    "module": "commonjs",
+    "strictFunctionTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "target": "ES2017",
+    "moduleResolution": "node",
+    "declaration": true,
+    "lib": ["es2018"]
+  }
+}

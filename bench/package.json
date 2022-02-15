@@ -2,10 +2,12 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "ts-node index.ts"
   },
   "devDependencies": {
-    "typeforce": "*",
-    "benchmark": "^2.1.4"
+    "@types/benchmark": "^2.1.1",
+    "benchmark": "^2.1.4",
+    "ts-node": "^10.5.0",
+    "typeforce": "^1.18.0"
   }
 }

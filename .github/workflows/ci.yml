@@ -1,0 +1,20 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.17.3
+    - name: Installing dependencies
+      run: |
+        npm -v
+        npm i
+    - name: Building typescript code
+      run: npm run build
+    - name: Running coverage
+      run: npm run coverage

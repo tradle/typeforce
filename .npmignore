@@ -1,0 +1,9 @@
+tsconfig.json
+src/tsconfig.cjs.json
+src/tsconfig.mjs.json
+bench
+scripts
+coverage
+*.tgz
+test
+.github

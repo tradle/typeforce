@@ -10,39 +10,73 @@
     "exceptions",
     "force"
   ],
-  "standard": {
-    "ignore": "test/fixtures/*"
-  },
   "homepage": "https://github.com/dcousens/typeforce",
   "bugs": {
     "url": "https://github.com/dcousens/typeforce/issues"
   },
   "license": "MIT",
   "author": "Daniel Cousens",
-  "main": "index.js",
-  "files": [
-    "async.js",
-    "errors.js",
-    "extra.js",
-    "index.js",
-    "native.js",
-    "nothrow.js"
-  ],
+  "main": "./cjs/index.js",
+  "module": "./mjs/index.mjs",
+  "ts-standard": {
+    "ignore": ["test/fixtures"]
+  },
+  "exports": {
+    ".": {
+      "import": "./mjs/index.mjs",
+      "require": "./cjs/index.js"
+    },
+    "./async": {
+      "import": "./mjs/async.mjs",
+      "require": "./cjs/async.js"
+    },
+    "./combine": {
+      "import": "./mjs/combine.mjs",
+      "require": "./cjs/combine.js"
+    },
+    "./compile": {
+      "import": "./mjs/compile.mjs",
+      "require": "./cjs/compile.js"
+    },
+    "./errors": {
+      "import": "./mjs/errors.mjs",
+      "require": "./cjs/errors.js"
+    },
+    "./extra": {
+      "import": "./mjs/extra.mjs",
+      "require": "./cjs/extra.js"
+    },
+    "./native": {
+      "import": "./mjs/native.mjs",
+      "require": "./cjs/native.js"
+    },
+    "./util": {
+      "import": "./mjs/util.mjs",
+      "require": "./cjs/util.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/dcousens/typeforce.git"
   },
   "scripts": {
-    "coverage": "c8 -r html -r text --check-coverage --branches 100 --functions 100 node test/index.js",
-    "bench": "cd bench; npm i --no-audit --no-donate; npm start",
+    "prepare": "rm -rf mjs cjs; npm run build && npm run lint && npm run coverage",
+    "coverage": "c8 -r html -r text --check-coverage --branches 100 --functions 100 npm run unit",
+    "bench": "cd bench; npm i --no-audit --no-donate --loglevel error; npm start",
+    "generate": "rm -f test/fixtures/2_* test/fixtures/1_* && ts-node scripts/generate_tests.ts",
+    "rename": "ts-node scripts/rename.ts",
+    "build": "cd src; tsc -p tsconfig.mjs.json && npm run rename && tsc -p tsconfig.cjs.json",
     "test": "npm run lint && npm run unit",
-    "lint": "standard",
-    "unit": "node test/*.js"
+    "lint": "ts-standard",
+    "unit": "ts-node test/index"
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/node": "^17.0.17",
     "c8": "^7.11.0",
     "fresh-tape": "^5.5.0",
-    "standard": "*"
+    "ts-node": "^10.5.0",
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.4.4"
   }
 }

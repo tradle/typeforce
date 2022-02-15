@@ -7,7 +7,7 @@ Exception messages may change between patch versions,  as often the patch will c
 
 ## Examples
 
-``` javascript
+```javascript
 const typeforce = require('typeforce')
 const { assert } = typeforce
 
@@ -60,7 +60,7 @@ assert(LongString, 'not long enough')
 ```
 
 **Pro**tips:
-``` javascript
+```javascript
 // use precompiled primitives for high performance
 assert(typeforce.Array, array)
 
@@ -96,7 +96,7 @@ assert({
 ```
 
 **Pro**tips (extended types):
-``` javascript
+```javascript
 assert(typeforce.tuple('String', 'Number'), ['foo', 1])
 // OK!
 
@@ -127,7 +127,7 @@ assert(typeforce.quacksLike('Foo'), new (function Foo() {}))
 ```
 
 **Pro**tips (no throw)
-``` javascript
+```javascript
 const typeforce = require('typeforce')
 const { match } = typeforce
 const value = 'foobar'
@@ -141,19 +141,9 @@ if (match(typeforce.Number, value)) {
 }
 ```
 
-**Pro**tips (async)
-``` javascript
-const typeforce = require('typeforce/async')
-const { assert } = typeforce
-
-assert(typeforce.Number, value, function (err) {
-  if (err) return console.log(`Oops, ${typeforce.error.message}`)
-
-  console.log(`${value} is a number`) // never happens
-})
-```
-
 **WARNING**: Be very wary of using the `quacksLike` type, as it relies on the `Foo.name` property.
 If that property is mangled by a transpiler,  such as `uglifyjs`,  you will have a bad time.
 
-## LICENSE [MIT](LICENSE)
+## LICENSE
+
+[MIT](./LICENSE)

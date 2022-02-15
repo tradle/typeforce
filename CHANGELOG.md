@@ -6,6 +6,11 @@
 
 Any type compiled with `typeforce.compile()` now has a `.match` and a `.assert` function that is faster than using the `typeforce()` method.
 
+### matchType/assertType faster helpers
+
+When you are certain that you have a test function `(value, strict) => true`, you can now use the faster `typeforce.assertType` and
+`typeforce.matchType` calls.
+
 ## Breaking Changes
 
 ### Main export
