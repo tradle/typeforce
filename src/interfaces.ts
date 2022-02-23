@@ -1,14 +1,49 @@
-export type RawValidator <T> = (value: any, strict?: boolean) => value is T
+export type Raw = (value: any, strict?: boolean) => any
+export type RawMatcher <T> = (value: any, strict?: boolean) => value is T
 
-export interface Matcher <T> extends RawValidator<T> {
+export interface Match <T> extends RawMatcher<T> {
   error: Error | null | undefined
 }
 
-export interface Validator <T> extends RawValidator<T> {
-  match: Matcher<T>
-  assert: RawValidator<T>
+export type Assert <T> = (value: any, strict?: boolean) => asserts value is T
+
+export type AnyRaw <T> = Raw | Match<T> | Assert<T>
+
+export type AssertType <T> = (type: AnyRaw<T>, value: T, strict?: boolean) => asserts value is T
+
+export interface Check<T> extends Raw {
+  match: Match<T>
+  assert: Assert<T>
   toJSON: () => any
 }
+
+export type DerivedCheck <T extends Raw, Value> =
+  T extends (value: any, strict?: boolean) => value is any
+    ? MatchCheck<Value>
+    : T extends (value: any, strict?: boolean) => asserts value is any
+      ? AssertCheck<Value>
+      : Check<unknown>
+
+export interface MatchCheck <T> extends Match<T>, Check<T> {}
+export interface AssertCheck <T> extends Assert<T>, Check<T> {}
+
+export type CheckForRaw <T extends Raw> =
+  T extends (value: any, strict?: boolean) => value is infer U
+    ? MatchCheck<U>
+    : T extends (value: any, strict?: boolean) => asserts value is infer U
+      ? AssertCheck<U>
+      : Check<unknown>
+
+export type TypeForCheck <T extends Raw> =
+  T extends MatchCheck<infer U>
+    ? U
+    : T extends AssertCheck<infer U>
+      ? U
+      : T extends (value: any, strict?: boolean) => value is infer U
+        ? U
+        : T extends (value: any, strict?: boolean) => asserts value is infer U
+          ? U
+          : unknown
 
 export type Maybe <T> = T | null | undefined
 
@@ -18,84 +53,85 @@ export interface ArrayOfOptions{
   maxLength?: number
 }
 
-export type ValidatorType <V> = V extends RawValidator<infer T> ? T : unknown
-export type JITType <T> = T extends RawValidator<infer T> ? T : ValidatorType<Compiled<T>>
+export type JITType <Input> = Input extends RawMatcher<infer T> ? T : Input extends Assert<infer T> ? T : TypeForCheck<Compiled<Input>>
 
 export type FlattenOr <T extends any[]> =
-  T extends [infer A] ?
-    ValidatorType<A> :
-    T extends [infer A, ...infer R] ?
-      ValidatorType<A> | FlattenOr<R> :
-      unknown
+  T extends [infer A]
+    ? TypeForAny<A>
+    : T extends [infer A, ...infer R]
+      ? TypeForAny<A> | FlattenOr<R>
+      : unknown
 
 export type CompiledOr <T extends any[]> =
-  T extends [infer A] ?
-    ValidatorType<Compiled<A>> :
-    T extends [infer A, ...infer R] ?
-      ValidatorType<Compiled<A>> | CompiledOr<R> :
-      unknown
+  T extends [infer A]
+    ? TypeForCheck<Compiled<A>>
+    : T extends [infer A, ...infer R]
+      ? TypeForCheck<Compiled<A>> | CompiledOr<R>
+      : unknown
 
-export interface ObjInput { [key: string]: Validator<any> }
+export interface ObjInput { [key: string]: Raw }
 export type ObjectTypes <Type extends ObjInput> = {
-  [Property in keyof Type]: Type[Property] extends Validator<infer T> ? T : unknown
+  [Property in keyof Type]: TypeForCheck<Type[Property]>
 }
 
 export interface Mapped <Value> { [key: string | number ]: Value }
 
 export type FlattenAnd <T extends any[]> =
-  T extends [infer A] ?
-    ValidatorType<A> :
-    T extends [infer A, ...infer R] ?
-      ValidatorType<A> & FlattenAnd<R> :
-      unknown
+  T extends [infer A]
+    ? TypeForAny<A>
+    : T extends [infer A, ...infer R]
+      ? TypeForAny<A> & FlattenAnd<R>
+      : unknown
 
 export type CompiledAnd <T extends any[]> =
-T extends [infer A] ?
-  ValidatorType<Compiled<A>> :
-  T extends [infer A, ...infer R] ?
-    ValidatorType<Compiled<A>> & CompiledOr<R> :
-    unknown
+T extends [infer A]
+  ? TypeForCheck<Compiled<A>>
+  : T extends [infer A, ...infer R]
+    ? TypeForCheck<Compiled<A>> & CompiledOr<R>
+    : unknown
+
+export type TypeForAny <T> = T extends Raw ? TypeForCheck<T> : unknown
 
 export type Tuple <T extends any[]> =
-  T extends [infer A] ?
-      [ValidatorType<A>] :
-    T extends [infer A, ...infer R] ?
-        [ValidatorType<A>, ...Tuple<R>] :
-        []
+  T extends [infer A]
+    ? [TypeForAny<A>]
+    : T extends [infer A, ...infer R]
+      ? [TypeForAny<A>, ...Tuple<R>]
+      : []
 
-export type MaybeCompiled <T> = Maybe<Compiled<T>>
+export type MaybeCompiled <T> = DerivedCheck<Compiled<T>, Maybe<TypeForCheck<Compiled<T>>>>
 
 export interface ObjectInput { [key: string]: any }
-export type ObjectCompiled <T extends ObjectInput> = Validator<{
-  [Property in keyof T]: ValidatorType<Compiled<T[Property]>>
+export type ObjectCompiled <T extends ObjectInput> = Check<{
+  [Property in keyof T]: TypeForCheck<Compiled<T[Property]>>
 }>
 
 export type TupleCompiled<T extends any[]> =
-  T extends [infer A] ?
-      [Compiled<A>] :
-    T extends [infer A, ...infer R] ?
-        [Compiled<A>, ...TupleCompiled<R>] :
-        []
+  T extends [infer A]
+    ? [Compiled<A>]
+    : T extends [infer A, ...infer R]
+      ? [Compiled<A>, ...TupleCompiled<R>]
+      : []
 
 export interface NativeTypes {
-  String: Validator<string>
-  Number: Validator<number>
-  Validator: Validator<Validator<any>>
-  Array: Validator<any[]>
-  Boolean: Validator<boolean>
-  Function: Validator<Function>
-  Nil: Validator<null | undefined>
-  Object: Validator<Object>
+  String: MatchCheck<string>
+  Number: MatchCheck<number>
+  Validator: MatchCheck<Check<any>>
+  Array: MatchCheck<any[]>
+  Boolean: MatchCheck<boolean>
+  Function: MatchCheck<Function>
+  Nil: MatchCheck<null | undefined>
+  Object: MatchCheck<Object>
 }
 
 export type TypeNameCompiled <Name extends string> = Name extends keyof NativeTypes
   ? NativeTypes[Name]
-  : Validator<Object>
+  : Check<Object>
 
 export type StringCompiled <T extends string> =
-  T extends `?${infer A}` ?
-    Maybe<TypeNameCompiled<A>> :
-    TypeNameCompiled<T>
+  T extends `?${infer A}`
+    ? Maybe<TypeNameCompiled<A>>
+    : TypeNameCompiled<T>
 
 // From: https://stackoverflow.com/a/50375286/62076
 type UnionToIntersection<U> =
@@ -108,21 +144,23 @@ type UnionForAny<T> = T extends never ? 'A' : 'B'
 type IsStrictlyAny<T> =
   UnionToIntersection<UnionForAny<T>> extends never ? true : false
 
-export type Compiled <T> =
-  IsStrictlyAny<T> extends true ?
-    Validator<any> :
-    T extends null | undefined ?
-      Validator<null | undefined> :
-      T extends string ?
-        StringCompiled<T> :
-        T extends Validator<any> ?
-          T :
-          T extends Function ?
-            Validator<unknown> :
-            T extends ObjectInput ?
-              ObjectCompiled<T> :
-              Validator<T>
+type FunctionCompiled <T extends Function> = Check<TypeForAny<T>>
 
-export type AnyOfCompiled <T extends any[]> = Validator<CompiledOr<T>>
-export type AllOfCompiled <T extends any[]> = Validator<CompiledAnd<T>>
-export type ArrayCompiled <T> = Validator<Array<ValidatorType<Compiled<T>>>>
+export type Compiled <T> =
+  IsStrictlyAny<T> extends true
+    ? Check<any>
+    : T extends null | undefined
+      ? Check<null | undefined>
+      : T extends string
+        ? StringCompiled<T>
+        : T extends Check<any>
+          ? T
+          : T extends Function
+            ? FunctionCompiled<T>
+            : T extends ObjectInput
+              ? ObjectCompiled<T>
+              : Check<T>
+
+export type AnyOfCompiled <T extends any[]> = Check<CompiledOr<T>>
+export type AllOfCompiled <T extends any[]> = Check<CompiledAnd<T>>
+export type ArrayCompiled <T> = Check<Array<TypeForCheck<Compiled<T>>>>

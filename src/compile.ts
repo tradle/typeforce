@@ -1,8 +1,8 @@
 import type {
   ArrayCompiled, ArrayOfOptions, Compiled, Mapped,
-  MaybeCompiled, ObjectCompiled, ObjectInput, RawValidator,
-  TupleCompiled, Validator, TypeNameCompiled, StringCompiled,
-  AnyOfCompiled, AllOfCompiled, ValidatorType, JITType, Tuple
+  MaybeCompiled, ObjectCompiled, ObjectInput, Raw,
+  TupleCompiled, Check, TypeNameCompiled, StringCompiled,
+  AnyOfCompiled, AllOfCompiled, JITType, Tuple, TypeForCheck
 } from './interfaces'
 import * as NATIVE from './native'
 import * as COMBINE from './combine'
@@ -13,19 +13,19 @@ export function arrayOf <T> (type: T, options?: ArrayOfOptions): ArrayCompiled<T
 }
 
 export function maybe <T> (type: T): MaybeCompiled<T> {
-  return COMBINE.maybe(compile(type)) as MaybeCompiled<T>
+  return COMBINE.maybe(compile(type))
 }
 
-export function map <Value extends any> (valueType: Value, keyType?: any): Validator<Mapped<Compiled<Value>>> {
-  let key: Validator<any> | undefined
+export function map <Value extends any> (valueType: Value, keyType?: any): Check<Mapped<Compiled<Value>>> {
+  let key: Check<any> | undefined
   if (keyType !== undefined && keyType !== undefined) {
     key = compile(keyType)
   }
-  return COMBINE.map(compile(valueType), key) as Validator<Mapped<Compiled<Value>>>
+  return COMBINE.map(compile(valueType), key) as Check<Mapped<Compiled<Value>>>
 }
 
 export function object <T extends ObjectInput> (uncompiled: T): ObjectCompiled<T> {
-  const type: { [key: string]: Validator<any> } = {}
+  const type: { [key: string]: Check<any> } = {}
   for (const typePropertyName in uncompiled) {
     type[typePropertyName] = compile(uncompiled[typePropertyName])
   }
@@ -42,7 +42,7 @@ export function allOf <T extends any[]> (...uncompiled: T): AllOfCompiled<T> {
   return COMBINE.allOf(...types) as AllOfCompiled<T>
 }
 
-export function quacksLike (typeName: string): Validator<Object> {
+export function quacksLike (typeName: string): Check<Object> {
   const obj = {
     [typeName] (value: any): value is Object {
       return typeName === getValueTypeName(value)
@@ -51,12 +51,12 @@ export function quacksLike (typeName: string): Validator<Object> {
   return addAPI(obj[typeName])
 }
 
-export function tuple <T extends any[]> (...uncompiled: T): Validator<Tuple<TupleCompiled<T>>> {
+export function tuple <T extends any[]> (...uncompiled: T): Check<Tuple<TupleCompiled<T>>> {
   const types = uncompiled.map(compile)
-  return COMBINE.tuple(...types) as Validator<Tuple<TupleCompiled<T>>>
+  return COMBINE.tuple(...types) as Check<Tuple<TupleCompiled<T>>>
 }
 
-export function value <T=any> (expected: T): Validator<T> {
+export function value <T=any> (expected: T): Check<T> {
   // TODO: Wrap with <> and replace <> with &gt;
   const name = String(expected)
   const obj = {
@@ -85,7 +85,7 @@ export function compileString <T extends string> (input: T): StringCompiled<T> {
 }
 
 export function compile <T> (type: T): Compiled<T> {
-  if (NATIVE.Validator(type)) {
+  if (NATIVE.Check(type)) {
     return type as unknown as Compiled<T>
   }
 
@@ -105,7 +105,7 @@ export function compile <T> (type: T): Compiled<T> {
   }
 
   if (NATIVE.Function(type)) {
-    return addAPI(type as unknown as RawValidator<any>) as Compiled<T>
+    return addAPI(type as unknown as Raw) as Compiled<T>
   }
 
   return value(type) as Compiled<T>
@@ -124,6 +124,8 @@ export const match = (<Type> (type: Type, value: any, strict?: boolean): value i
 }
 
 export function assert <Type> (type: Type, value: any, strict?: boolean):
-  value is (Type extends RawValidator<any> ? ValidatorType<Type> : ValidatorType<Compiled<Type>>) {
-  return (NATIVE.Validator(type) ? type : compile(type)).assert(value, strict)
+  value is (Type extends Check<any> ? TypeForCheck<Type> : TypeForCheck<Compiled<Type>>) {
+  const compiled = NATIVE.Check(type) ? type : compile(type)
+  compiled.assert(value, strict)
+  return true
 }

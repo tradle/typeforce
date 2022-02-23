@@ -75,6 +75,7 @@ import fix1_48 from './1_48'
 import fix1_49 from './1_49'
 import fix1_50 from './1_50'
 import fix1_51 from './1_51'
+import fix1_52 from './1_52'
 
 const fixtures = ((compile, run, types, opts) => {
   new Array<RunFixture>(
@@ -153,7 +154,8 @@ const fixtures = ((compile, run, types, opts) => {
     fix1_48,
     fix1_49,
     fix1_50,
-    fix1_51
+    fix1_51,
+    fix1_52
   ).forEach(fixture => fixture(compile, run, types, opts))
 }) as RunFixture
 

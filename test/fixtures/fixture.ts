@@ -51,7 +51,7 @@ const fixture = ((name: string, createType: (types: { [key: string]: any }) => v
     }
     const runActual = (opts.only ? run.only : run) ?? run
     runActual(name, t => {
-      const compiled: Compiled<any> | undefined = compile(createType(types))
+      const compiled: Compiled<any> = compile(createType(types))
       const valid = opts && opts.skipValid
         ? () => {}
         : (input: any) => {
@@ -60,11 +60,11 @@ const fixture = ((name: string, createType: (types: { [key: string]: any }) => v
         }
       const invalid = opts && opts.skipInvalid
         ? () => {}
-        : (input: any) => {
+        : (input: Invalid) => {
           if (!input.exception) throw new TypeError('Expected exception')
-          const value = 'valueId' in input ? VALUES[input.valueId] : input.value
+          const value: any = 'valueId' in input ? VALUES[input.valueId] : input.value
           t.throws(function () {
-            (compiled as Compiled<any>).assert(value, input.strict)
+            compiled.assert(value, input.strict)
           }, new RegExp(input.exception), 'throws "' + input.exception + '" with value of ' + JSON.stringify(value))
         }
       handler({ valid: valid, invalid: invalid })
