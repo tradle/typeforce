@@ -10,7 +10,7 @@ export interface Validator <T> extends RawValidator<T> {
   toJSON: () => any
 }
 
-export type Maybe <T> = Validator<T | null | undefined>
+export type Maybe <T> = T | null | undefined
 
 export interface ArrayOfOptions{
   length?: number
