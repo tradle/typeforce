@@ -5,6 +5,12 @@ export default function createTypes (typeforce: TypeforceForTest): { [type: stri
   function Letter (value: any): value is string {
     return /^[a-z]$/i.test(value)
   }
+  function isNumber (value: any): asserts value is number {
+    if (typeof value !== 'number') {
+      throw new Error('not a number')
+    }
+  }
+  isNumber.toJSON = () => 'Number'
 
   function cached <T extends { [key: string]: any }> (input: T): T {
     const result = {}
@@ -75,6 +81,7 @@ export default function createTypes (typeforce: TypeforceForTest): { [type: stri
     get UInt16 () { return typeforce.UInt16 },
     get UInt32 () { return typeforce.UInt32 },
     get UInt53 () { return typeforce.UInt53 },
-    get Finite () { return typeforce.Finite }
+    get Finite () { return typeforce.Finite },
+    get 'Range(assert)1-5' () { return typeforce.Range(1, 5, isNumber) }
   })
 }

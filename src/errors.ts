@@ -1,4 +1,4 @@
-import type { Matcher, RawValidator, Validator } from './interfaces'
+import type { Match, Raw, CheckForRaw, TypeForCheck, Assert, AnyRaw, AssertType } from './interfaces'
 
 export function getTypeName (fn: Function): string {
   if (fn.name !== undefined) {
@@ -122,23 +122,30 @@ T extends TfPropertyTypeError ?
   return e
 }
 
-export function assertType <T> (type: RawValidator<T>, value: any, strict?: boolean): value is T {
-  if (type(value, strict)) return true
-  throw new TfTypeError(type, value)
+export function assertType <T> (type: AnyRaw<T>, value: T, strict?: boolean): asserts value is T {
+  if (!(type(value, strict) as boolean)) {
+    throw new TfTypeError(type, value)
+  }
+  // @ts-expect-error
+  return true
 }
 
-export const matchType = (<T> (type: RawValidator<T>, value: any, strict?: boolean): value is T => {
+// To be used for typescript. Assert operations need to be explicitly typed
+export const assertAnyType: AssertType<any> = assertType as AssertType<any>
+
+export const matchType = (<T extends Raw> (type: T, value: any, strict?: boolean): value is TypeForCheck<T> => {
   try {
-    return assertType(type, value, strict)
+    assertType(type, value, strict)
+    return true
   } catch (e) {
     matchType.error = e as Error
     return false
   }
-}) as (<T> (type: RawValidator<T>, value: any, strict?: boolean) => value is T) & {
+}) as (<T extends Raw> (type: T, value: any, strict?: boolean) => value is TypeForCheck<T>) & {
   error: Error | null | undefined
 }
 
-export function addAPI <T = any> (fn: RawValidator<T>, json?: any): Validator<T> {
+export function addAPI <T extends Raw> (fn: T, json?: any): CheckForRaw<T> {
   if (!('toJSON' in fn)) {
     if (json === undefined) {
       json = fn.name
@@ -147,17 +154,18 @@ export function addAPI <T = any> (fn: RawValidator<T>, json?: any): Validator<T>
       toJSON () { return json }
     })
   }
-  const assert = (value: any, strict?: boolean): value is T => assertType(fn, value, strict)
+  const assert: Assert<T> = (value: any, strict?: boolean): asserts value is T => assertType(fn, value, strict)
   const match = ((value: any, strict?: boolean): value is T => {
     try {
-      return assert(value, strict)
+      assert(value, strict)
+      return true
     } catch (e) {
       match.error = e as Error
       return false
     }
-  }) as Matcher<T>
+  }) as Match<T>
   return Object.assign(fn, {
     assert,
     match
-  }) as Validator<T>
+  }) as unknown as CheckForRaw<T>
 }

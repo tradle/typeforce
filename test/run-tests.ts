@@ -6,7 +6,7 @@ import createTypes from './types'
 
 type OmitUnusedInTest <T> = Omit<T,
 'Validator' | 'getTypeName' | 'tfJSON' | 'tfString' | 'tfErrorString' | 'getValueTypeName' | 'tfSubError' | 'tfCustomError' |
-'tfPropertyErrorString' | 'assertType' | 'addAPI' | 'compileTypeName' | 'compileString'
+'tfPropertyErrorString' | 'assertType' | 'addAPI' | 'compileTypeName' | 'compileString' | 'Check' | 'assertAnyType'
 >
 
 export type TypeforceForTest = OmitUnusedInTest<typeof typeforceTs>

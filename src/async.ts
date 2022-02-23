@@ -1,4 +1,5 @@
 import { compile } from './compile'
+import { Raw } from './interfaces'
 export * from './index'
 
 export interface Callback {
@@ -8,7 +9,7 @@ export interface Callback {
 
 function assertAsync (type: any, value: any, strict: boolean, callback: Callback): void {
   try {
-    compile(type).assert(value, strict)
+    (compile(type).assert as Raw)(value, strict)
   } catch (err) {
     // eslint-disable-next-line node/no-callback-literal
     return queueMicrotask(() => callback(err as Error, false))
