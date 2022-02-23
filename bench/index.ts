@@ -81,7 +81,7 @@ const suiteTest = (prefix: string, compile: <T> (input: T) => Compiled<T>, types
           return
         }
         namedTests.push({
-          name: `${name} ...${variant} ...${prefix}`,
+          name: `${String(name)} ...${variant} ...${prefix}`,
           handler
         })
       }) as RunHandler,
