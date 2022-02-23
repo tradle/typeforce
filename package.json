@@ -23,34 +23,47 @@
   },
   "exports": {
     ".": {
+      "types": "./mjs/index.d.mjs",
       "import": "./mjs/index.mjs",
       "require": "./cjs/index.js"
     },
     "./async": {
+      "types": "./mjs/async.d.mjs",
       "import": "./mjs/async.mjs",
       "require": "./cjs/async.js"
     },
     "./combine": {
+      "types": "./mjs/combine.d.mjs",
       "import": "./mjs/combine.mjs",
       "require": "./cjs/combine.js"
     },
     "./compile": {
+      "types": "./mjs/compile.d.mjs",
       "import": "./mjs/compile.mjs",
       "require": "./cjs/compile.js"
     },
     "./errors": {
+      "types": "./mjs/errors.d.mjs",
       "import": "./mjs/errors.mjs",
       "require": "./cjs/errors.js"
     },
     "./extra": {
+      "types": "./mjs/extra.d.mjs",
       "import": "./mjs/extra.mjs",
       "require": "./cjs/extra.js"
     },
     "./native": {
+      "types": "./mjs/native.d.mjs",
       "import": "./mjs/native.mjs",
       "require": "./cjs/native.js"
     },
+    "./interfaces": {
+      "types": "./mjs/interfaces.d.mjs",
+      "import": "./mjs/interfaces.mjs",
+      "require": "./cjs/interfaces.js"
+    },
     "./util": {
+      "types": "./mjs/util.d.mjs",
       "import": "./mjs/util.mjs",
       "require": "./cjs/util.js"
     }
