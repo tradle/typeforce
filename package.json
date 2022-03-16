@@ -1,6 +1,6 @@
 {
   "name": "@tradle/typeforce",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Another typescript-based, biased type checking solution for Javascript",
   "keywords": [
     "typeforce",
