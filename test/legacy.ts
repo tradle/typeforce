@@ -29,6 +29,7 @@ function addAPI (fn: Check<any>): Check<any> {
 
 export const sync: TypeforceForTest = {
   assert: npm,
+  assertTypeDebug: npm,
   matchType: (<T extends Raw> (type: T, value: any, strict?: boolean): value is TypeForCheck<T> => {
     try {
       return npm(type, value, strict)

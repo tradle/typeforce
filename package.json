@@ -19,7 +19,9 @@
   "main": "./cjs/index.js",
   "module": "./mjs/index.mjs",
   "ts-standard": {
-    "ignore": ["test/fixtures"]
+    "ignore": [
+      "test/fixtures"
+    ]
   },
   "exports": {
     ".": {
@@ -83,8 +85,11 @@
     "lint": "ts-standard",
     "unit": "ts-node test/index"
   },
-  "dependencies": {},
+  "dependencies": {
+    "debug": "^4.3.3"
+  },
   "devDependencies": {
+    "@types/debug": "^4.1.7",
     "@types/node": "^17.0.17",
     "c8": "^7.11.0",
     "fresh-tape": "^5.5.0",

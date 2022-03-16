@@ -21,6 +21,7 @@ export default function runTests (name: string, typeforce: TypeforceForTest, typ
       t.equals(typeforce.assert(typeforce.String, '1'), true)
       t.end()
     })
+
     test('serialization', function (t) {
       t.equals(typeforce.maybe(typeforce.anyOf('String', 'Number'))?.toJSON(), '?String|Number')
       t.equals(typeforce.maybe(typeforce.tuple('String', 'Number'))?.toJSON(), '?(String, Number)')
@@ -28,6 +29,19 @@ export default function runTests (name: string, typeforce: TypeforceForTest, typ
       t.equals(typeforce.maybe(typeforce.map('String'))?.toJSON(), '?{String}')
       t.equals(typeforce.maybe(typeforce.object({ foo: 'String' }))?.toJSON(), '?Object')
       t.equals(typeforce.object({ foo: ['String'] }).toJSON(), 'Object')
+      t.end()
+    })
+
+    test('assertDebug', function (t) {
+      typeforce.assertTypeDebug(typeforce.String, 'hello')
+      t.throws(() => typeforce.assertTypeDebug(typeforce.Number, 'hello'))
+      /* eslint-disable @typescript-eslint/no-throw-literal */
+      t.throws(() => typeforce.assertTypeDebug((val): asserts val is any => { throw new Error('foo') }, 'bar'))
+      t.throws(() => typeforce.assertTypeDebug((val): asserts val is any => { throw 'foo' }, 'bar'))
+      t.throws(() => typeforce.assertTypeDebug((val): asserts val is any => { throw 1 }, 'bar'))
+      t.throws(() => typeforce.assertTypeDebug((val): asserts val is any => { throw null }, 'bar'))
+      t.throws(() => typeforce.assertTypeDebug((val): asserts val is any => { throw { __error: new Error('foo') } }, 'bar'))
+      /* eslint-enable @typescript-eslint/no-throw-literal */
       t.end()
     })
 

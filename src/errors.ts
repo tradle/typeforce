@@ -1,9 +1,13 @@
 import type { Match, Raw, CheckForRaw, TypeForCheck, Assert, AnyRaw, AssertType } from './interfaces'
+import newDebug from 'debug'
+
+const debug = newDebug('tradle:typeforce')
 
 export function getTypeName (fn: Function): string {
   if (fn.name !== undefined) {
     return fn.name
   }
+  /* c8 ignore next 6 */
   const match = fn.toString().match(/function (.*?)\s*\(/)
   if (match != null) {
     return match[1]
@@ -117,18 +121,60 @@ T extends TfPropertyTypeError ?
       e.__type, property, label, e.__value, e.__valueTypeName
     )
   }
-
+  /* c8 ignore next 3 */
   // @ts-expect-error
   return e
 }
 
-export function assertType <T> (type: AnyRaw<T>, value: T, strict?: boolean): asserts value is T {
+function assertTypeRaw <T> (type: AnyRaw<T>, value: T, strict?: boolean): asserts value is T {
   if (!(type(value, strict) as boolean)) {
     throw new TfTypeError(type, value)
   }
   // @ts-expect-error
   return true
 }
+
+function getStack (err: any): string {
+  if (typeof err === 'string') {
+    return err
+  }
+  if (typeof err !== 'object' || err === null) {
+    return String(err)
+  }
+  if ('__error' in err) {
+    return getStack(err.__error)
+  }
+  if ('stack' in err) {
+    return String(err.stack)
+  }
+  if ('message' in err) {
+    return String(err.message)
+  }
+  return String(err)
+}
+
+export function assertTypeDebug <T> (type: AnyRaw<T>, value: T, strict?: boolean): asserts value is T {
+  let match = false
+  try {
+    match = type(value, strict) as boolean
+  } catch (err) {
+    debug('typecheck failed: ' + getStack(err), ...arguments)
+    throw err
+  }
+  if (!match) {
+    const error = new TfTypeError(type, value)
+    debug('typematch failed: ' + getStack(error), ...arguments)
+    throw error
+  }
+  // @ts-expect-error
+  return true
+}
+
+export const assertType: <T> (type: AnyRaw<T>, value: T, string?: boolean) => asserts value is T =
+  debug.enabled
+    /* c8 ignore next */
+    ? assertTypeDebug
+    : assertTypeRaw
 
 // To be used for typescript. Assert operations need to be explicitly typed
 export const assertAnyType: AssertType<any> = assertType as AssertType<any>
